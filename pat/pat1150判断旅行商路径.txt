@@ -1,0 +1,72 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=201;
+const int inf=99999999;
+int g[N][N];
+bool f[N][N];
+bool vis[N];
+int main()
+{
+    int n,m;
+    fill(g[0],g[0]+N*N,inf);
+    memset(f,0,sizeof(0));
+    cin>>n>>m;
+    for(int i=0;i<m;i++)
+    {
+        int x,y,dis;cin>>x>>y>>dis;
+        g[x][y]=g[y][x]=dis;
+        f[x][y]=f[y][x]=1;
+    }
+    int k;
+    int mindis=inf,minindex=-1;
+    cin>>k;
+    for(int i=1;i<=k;i++)
+    {
+        int dis=0,cnt=0,t;
+        cin>>t;
+        vector<int> v;
+        int type;
+        memset(vis,0,sizeof(vis));
+        bool flag=true;
+        for(int i=0;i<t;i++)
+        {
+            int x;cin>>x;
+            v.push_back(x);
+        }
+        vis[v[0]]=1;
+        cnt++;
+        for(int i=0;i<t-1;i++)
+        {
+            if(f[v[i]][v[i+1]])
+            {
+                dis+=g[v[i]][v[i+1]];
+                if(!vis[v[i+1]])cnt++;
+                vis[v[i+1]]=1;
+            }
+            else
+            {
+                flag=false;
+                break;
+            }
+        }
+        cout<<"Path "<<i<<": ";
+        if(flag==false)cout<<"NA ";
+        else cout<<dis<<" ";
+        if(flag==false)type=2;
+        else
+        {
+            if(t<=n||cnt<n)type=2;
+            else if(t==n+1&&cnt==n&&v[0]!=v[n])type=2;
+            else if(t==n+1&&cnt==n&&v[0]==v[n])type=0;
+            else if(t>n+1&&cnt==n)type=1;
+        }
+        if(type==1||type==0)
+            if(dis<mindis){
+                mindis=dis;
+                minindex=i;
+            }
+        string ans[3]={"(TS simple cycle)","(TS cycle)","(Not a TS cycle)"};
+        cout<<ans[type]<<endl;
+    }
+    printf("Shortest Dist(%d) = %d",minindex,mindis);
+}

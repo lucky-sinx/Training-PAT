@@ -1,0 +1,60 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=2e5;
+int a[N];
+int n;
+int t;
+bool isprime(int x)
+{
+    if(x<2)return false;
+    for(int i=2;i*i<=x;i++)
+        if(x%i==0)return false;
+    return true;
+}
+int Search(int x)
+{
+    int res=0;
+    int mod=x%t;
+    for(int i=0;i<=t;i++)
+    {
+        res++;
+        if(a[(mod+i*i)%t]==x||a[(mod+i*i)%t]==0)
+            break;
+    }
+//    cout<<x<<' '<<res<<endl;
+    return res;
+}
+bool Insert(int x)
+{
+    bool flag=false;
+    int mod=x%t;
+    for(int i=0;i<t;i++)
+        if(a[(mod+i*i)%t]==0){
+//            cout<<mod+i*i<<':'<<x<<endl;
+            a[(mod+i*i)%t]=x;
+            flag=true;
+            break;
+        }
+    return flag;
+}
+int main()
+{
+    int msize,n,m;
+    cin>>msize>>n>>m;
+    for(t=msize;!isprime(t);t++);
+//    cout<<t<<endl;
+    memset(a,0,sizeof(a));
+    for(int i=0;i<n;i++)
+    {
+        int x;cin>>x;
+        if(!Insert(x))
+            cout<<x<<" cannot be inserted."<<endl;
+    }
+    int res=0;
+    for(int i=0;i<m;i++)
+    {
+        int x;cin>>x;
+        res+=Search(x);
+    }
+    printf("%.1f",res*1.0/m);
+}

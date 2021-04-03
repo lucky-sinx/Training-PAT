@@ -1,0 +1,46 @@
+#include<algorithm>
+#include<iostream>
+#include<vector>
+#include<string>
+using namespace std;
+const int N=1e4+10;
+int n;
+struct node
+{
+    string name;
+    int height;
+};
+node student[N];
+bool cmp(node x,node y)
+{
+    if(x.height==y.height)return x.name<y.name;
+    else return x.height>y.height;
+}
+int main()
+{
+    int k,m;
+    cin>>n>>k;
+    for(int i=0;i<n;i++)
+        cin>>student[i].name>>student[i].height;
+    sort(student,student+n,cmp);
+    int t=0,row=k;
+    while(row)
+    {
+        if(row==k)
+            m=n-n/k*(k-1);
+        else
+            m=n/k;
+        vector<string >st(m);
+        st[m/2]=student[t].name;
+        for(int i=t+1,j=m/2-1;i<t+m;i+=2)
+            st[j--]=student[i].name;
+        for(int i=t+2,j=m/2+1;i<t+m;i+=2)
+            st[j++]=student[i].name;
+        cout<<st[0];
+        for(int i=1;i<m;i++)cout<<' '<<st[i];
+        cout<<endl;
+        t+=m;
+        row--;
+    }
+
+}

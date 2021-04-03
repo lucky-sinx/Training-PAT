@@ -1,0 +1,97 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=505;
+const int inf=99999999;
+int mp[N][N];
+int a[N];
+bool vis[N];
+int n,c,m,s,t;
+int dis[N];
+vector<int> path[N];
+vector<int> temppath,bestpath;
+int minneed=inf,minback=inf;
+void dfs(int t)
+{
+    temppath.push_back(t);
+    if(t==0)
+    {
+        int need=0,bac=0;
+        for(int i=temppath.size()-1;i>=0;i--)
+        {
+            int index=temppath[i];
+            if(a[index]>0)bac+=a[index];
+            else{
+                if(bac>(0-a[index]))
+                    bac+=a[index];
+                else
+                {
+                    need+=(0-a[index])-bac;
+                    bac=0;
+                }
+            }
+        }
+        if(need<minneed)
+        {
+            minneed=need;minback=bac;
+            bestpath=temppath;
+        }
+        else if(need==minneed&&bac<minback)
+        {
+            minback=bac;
+            bestpath=temppath;
+        }
+    }
+    for(int i=0;i<path[t].size();i++)
+        dfs(path[t][i]);
+    temppath.pop_back();
+}
+int main()
+{
+    cin>>c>>n>>t>>m;
+    for(int i=1;i<=n;i++)
+    {
+        cin>>a[i];
+        a[i]=a[i]-c/2;
+    }
+    fill(mp[0],mp[0]+N*N,inf);
+    fill(dis,dis+N,inf);
+    memset(vis,0,sizeof(vis));
+    for(int i=0;i<m;i++)
+    {
+        int x,y,d;cin>>x>>y>>d;
+        mp[x][y]=mp[y][x]=d;
+    }
+    dis[0]=0;
+    for(int i=0;i<n+1;i++)
+    {
+        int u=-1,minn=inf;
+        for(int j=0;j<n+1;j++)
+        {
+            if(vis[j]==0&&dis[j]<minn){
+                minn=dis[j];
+                u=j;
+            }
+        }
+        if(u==-1)break;
+        vis[u]=1;
+        for(int j=0;j<n+1;j++)
+        {
+            if(vis[j]==0&&mp[u][j]!=inf)
+            {
+                if(dis[j]==dis[u]+mp[u][j])
+                    path[j].push_back(u);
+                else if(dis[j]>dis[u]+mp[u][j])
+                {
+                    path[j].clear();
+                    dis[j]=dis[u]+mp[u][j];
+                    path[j].push_back(u);
+                }
+            }
+        }
+    }
+    dfs(t);
+    cout<<minneed<<" 0";
+    for(int i=bestpath.size()-2;i>=0;i--)
+        cout<<"->"<<bestpath[i];
+    cout<<" "<<minback;
+}

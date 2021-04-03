@@ -1,0 +1,18 @@
+#include<iostream>
+#include<string>
+using namespace std;
+int s[7]={0};
+int main()
+{
+    int r,g,b;
+    cin>>r>>g>>b;
+    s[0]=r/13;s[1]=r%13;
+    s[2]=g/13;s[3]=g%13;
+    s[4]=b/13;s[5]=b%13;
+    cout<<'#';
+    for(int i=0;i<6;i++)
+    {
+        if(s[i]<=9)cout<<s[i];
+        else cout<<(char)(s[i]-10+'A');
+    }
+}

@@ -1,0 +1,136 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=505;
+const int inf=999999999;
+int mape1[N][N],mape2[N][N];
+int Cost[N],Time[N],Nodenum[N];
+int n,k,s,t;
+int pre_cost[N],pre_time[N];
+vector<int> temp_path,min_cost,min_time;
+int ans1,ans2;
+bool vis[N];
+void dfs_cost(int t)
+{
+    min_cost.push_back(t);
+    if(t==s)return;
+    dfs_cost(pre_cost[t]);
+}
+void dfs_time(int t)
+{
+    min_time.push_back(t);
+    if(t==s)return;
+    dfs_time(pre_time[t]);
+}
+int main()
+{
+    cin>>n>>k;
+    fill(mape1[0],mape1[0]+N*N,inf);
+    fill(mape2[0],mape2[0]+N*N,inf);
+    for(int i=0;i<k;i++)
+    {
+        int from,to,type,c,t;
+        cin>>from>>to>>type>>c>>t;
+        mape1[from][to]=c;mape2[from][to]=t;
+        if(type==0){mape1[to][from]=c;mape2[to][from]=t;}
+    }
+    cin>>s>>t;
+    //找最短cost
+    fill(Cost,Cost+N,inf);
+    fill(Time,Time+N,inf);
+    memset(vis,0,sizeof(vis));
+    Cost[s]=0;
+    for(int i=0;i<n;i++)pre_cost[i]=i;
+    for(int i=0;i<n;i++)//dijkstra算Cost
+    {
+        int u=-1,min_cos=inf;
+        for(int j=0;j<n;j++)
+            if(!vis[j]&&min_cos>Cost[j]){
+                min_cos=Cost[j];
+                u=j;
+            }
+        if(u==-1)break;
+        vis[u]=true;
+        for(int j=0;j<n;j++)
+        {
+            if(!vis[j]&&mape1[u][j]!=inf)
+            {
+                if(Cost[j]>Cost[u]+mape1[u][j])
+                {
+                    Cost[j]=Cost[u]+mape1[u][j];
+                    pre_cost[j]=u;
+                    Time[j]=Time[u]+mape2[u][j];
+                }
+                else if(Cost[j]==Cost[u]+mape1[u][j]&&Time[j]>Time[u]+mape2[u][j])
+                {
+                    Time[j]=Time[u]+mape2[u][j];
+                    pre_cost[j]=u;
+                }
+            }
+        }
+    }
+    dfs_cost(t);
+    ans1=Cost[t];
+    //找最短time
+    fill(Nodenum,Nodenum+N,0);
+    fill(Time,Time+N,inf);
+    memset(vis,0,sizeof(vis));
+    Time[s]=0;
+    for(int i=0;i<n;i++)pre_time[i]=i;
+    for(int i=0;i<n;i++)//dijkstra算Cost
+    {
+        int u=-1,min_tim=inf;
+        for(int j=0;j<n;j++)
+            if(!vis[j]&&min_tim>Time[j]){
+                min_tim=Time[j];
+                u=j;
+            }
+        if(u==-1)break;
+        vis[u]=true;
+        for(int j=0;j<n;j++)
+        {
+            if(!vis[j]&&mape2[u][j]!=inf)
+            {
+                if(Time[j]>Time[u]+mape2[u][j])
+                {
+                    Time[j]=Time[u]+mape2[u][j];
+                    pre_time[j]=u;
+                    Nodenum[j]=Nodenum[u]+1;
+                }
+                else if(Time[j]==Time[u]+mape2[u][j]&&Nodenum[j]>Nodenum[u]+1)
+                {
+                    Nodenum[j]=Nodenum[u]+1;
+                    pre_time[j]=u;
+                }
+            }
+        }
+    }
+    ans2=Time[t];
+    dfs_time(t);
+    //输出答案
+    cout<<"Distance = "<<ans1;
+    if(min_cost==min_time)
+    {
+        cout<<"; Time = "<<ans2<<": ";
+        for(int i=min_cost.size()-1;i>=0;i--)
+        {
+            cout<<min_cost[i];
+            if(i)cout<<" -> ";
+        }
+    }
+    else
+    {
+        cout<<": ";
+        for(int i=min_cost.size()-1;i>=0;i--)
+        {
+            cout<<min_cost[i];
+            if(i)cout<<" -> ";
+        }
+        cout<<endl;
+        cout<<"Time = "<<ans2<<": ";
+        for(int i=min_time.size()-1;i>=0;i--)
+        {
+            cout<<min_time[i];
+            if(i)cout<<" -> ";
+        }
+    }
+}

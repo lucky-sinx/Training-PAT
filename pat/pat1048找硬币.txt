@@ -1,0 +1,30 @@
+#include<iostream>
+#include<map>
+#include<vector>
+#include<algorithm>
+using namespace std;
+struct solve
+{
+    int v1,v2;
+    solve(int x1,int x2):v1(x1),v2(x2){}
+};
+vector<solve> solutions;
+map<int,bool> mape;
+int main()
+{
+    int n,m;cin>>n>>m;
+    while(n--)
+    {
+        int x;cin>>x;
+        if(mape[m-x]==true)solutions.push_back(solve(min(x,m-x),max(x,m-x)));
+        if(mape[x]==false)mape[x]=true;
+    }
+    if(solutions.size()==0)cout<<"No Solution"<<endl;
+    else
+    {
+        int min_index=0;
+        for(int i=1;i<solutions.size();i++)
+            if(solutions[i].v1<solutions[min_index].v1)min_index=i;
+        cout<<solutions[min_index].v1<<' '<<solutions[min_index].v2<<endl;
+    }
+}

@@ -1,0 +1,61 @@
+#include<string>
+#include<cstdio>
+#include<iostream>
+#include<queue>
+using namespace std;
+struct animal{
+    int no;
+    int order;
+    animal(int n,int o):no(n),order(o){}
+};
+
+int main()
+{
+    int n;
+    cin>>n;
+    queue<animal> dog,cat;
+    int i=0;
+    while(n--){
+        int type,no;
+        cin>>type>>no;
+        if(type==1){
+            if(no>0)dog.push(animal(no,i++));
+            else cat.push(animal(no,i++));
+        }
+        else{
+            if(no==0){
+                if(!dog.empty()&&!cat.empty()){
+                    if(dog.front().order<cat.front().order){
+                        cout<<dog.front().no<<" ";
+                        dog.pop();
+                    }else{
+                        cout<<cat.front().no<<" ";
+                        cat.pop();
+                    }
+                }
+                else if(dog.empty()&&!cat.empty()){
+                    cout<<cat.front().no<<" ";
+                    cat.pop();
+                }
+                else if(!dog.empty()&&cat.empty()){
+                    cout<<dog.front().no<<" ";
+                        dog.pop();
+                }
+            }
+            else if(no==1)
+            {
+                if(!dog.empty()){
+                    cout<<dog.front().no<<" ";
+                        dog.pop();
+                }
+            }
+            else if(no==-1)
+            {
+                if(!cat.empty()){
+                    cout<<cat.front().no<<" ";
+                    cat.pop();
+                }
+            }
+        }
+    }
+}

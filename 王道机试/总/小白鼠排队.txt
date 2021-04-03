@@ -1,0 +1,25 @@
+#include<string>
+#include<cstdio>
+#include<iostream>
+#include<algorithm>
+using namespace std;
+typedef struct node{
+    string color;
+    int weight;
+}student;
+bool compare(student x,student y)
+{
+    return x.weight>y.weight;
+}
+int main(){
+    student s[100];
+    int n;
+    cin>>n;
+    for(int i=0;i<n;i++)
+    {
+        cin>>s[i].weight>>s[i].color;
+    }
+    sort(s,s+n,compare);
+    for(int i=0;i<n;i++)
+        cout<<s[i].color<<endl;
+}

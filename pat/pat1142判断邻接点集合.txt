@@ -1,0 +1,60 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=202;
+bool g[N][N];
+bool ok[N];
+int n,m;
+int main()
+{
+    cin>>n>>m;
+    memset(g,0,sizeof(0));
+    for(int i=0;i<m;i++)
+    {
+        int a,b;cin>>a>>b;
+        g[a][b]=g[b][a]=1;
+    }
+    int k;cin>>k;
+    while(k--)
+    {
+        int a;cin>>a;
+        memset(ok,0,sizeof(ok));
+        vector<int> c1,c2;
+        for(int i=0;i<a;i++)
+        {
+            int b;cin>>b;
+            ok[b]=true;
+            c1.push_back(b);
+        }
+        for(int i=1;i<=n;i++)
+            if(!ok[i])c2.push_back(i);
+
+//        for(int i=0;i<c1.size();i++)cout<<c1[i]<<' ';
+//        cout<<endl;
+//        for(int i=0;i<c2.size();i++)cout<<c2[i]<<' ';
+
+        bool flag=true;
+        for(int i=0;i<c1.size();i++)
+        {
+            if(!flag)break;
+            for(int j=i+1;j<c1.size();j++)
+                if(g[c1[i]][c1[j]]==false){flag=false;break;}
+        }
+        if(flag)
+        {
+            bool flag1=true;
+            for(int i=0;i<c2.size();i++)
+            {
+                int cnt=0;
+                for(int j=0;j<c1.size();j++)
+                    if(g[c1[j]][c2[i]]==true)cnt++;
+                if(cnt==c1.size()){flag1=false;break;}
+            }
+            if(flag1)
+                cout<<"Yes"<<endl;
+            else
+                cout<<"Not Maximal"<<endl;
+        }
+        else
+            cout<<"Not a Clique"<<endl;
+    }
+}

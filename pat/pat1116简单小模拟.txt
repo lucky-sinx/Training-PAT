@@ -1,0 +1,42 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=1e4+5;
+int ranklist[N]={0};
+int ischecked[N]={0};
+bool isprime(int x)
+{
+    if(x<2)return false;
+    for(int i=2;i*i<=x;i++)
+        if(x%i==0)return false;
+    return true;
+}
+int main()
+{
+    int n;cin>>n;
+    for(int i=0;i<n;i++)
+    {
+        int x;cin>>x;
+        ranklist[x]=i+1;
+        ischecked[x]=1;
+    }
+    int k;
+    cin>>k;
+    while(k--)
+    {
+        int no;cin>>no;
+        if(ischecked[no]==1)
+        {
+            ischecked[no]=-1;
+            if(ranklist[no]==1)
+                printf("%04d: Mystery Award\n",no);
+            else if(isprime(ranklist[no]))
+                printf("%04d: Minion\n",no);
+            else
+                printf("%04d: Chocolate\n",no);
+        }
+        else if(ischecked[no]==-1)
+            printf("%04d: Checked\n",no);
+        else if(ischecked[no]==0)
+            printf("%04d: Are you kidding?\n",no);
+    }
+}

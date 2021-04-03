@@ -1,0 +1,74 @@
+#include<queue>
+#include<vector>
+#include<iostream>
+#include<cstring>
+#include<climits>
+#include<cstdio>
+using namespace std;
+const int N=505,INF=0x3f3f3f3f;
+int a[N],mape[N][N];
+int num[N],dis[N],vis[N],n,m,c1,c2,total[N];
+void init()
+{
+    memset(num,0,sizeof(num));
+    memset(vis,0,sizeof(vis));
+    memset(total,0,sizeof(total));
+    memset(dis,INF,sizeof(dis));
+}
+void dijkstra(int c1)
+{
+    dis[c1]=0;num[c1]=a[c1];total[c1]=1;
+    for(int i=0;i<n;i++)
+    {
+        int pos=-1;
+        for(int j=0;j<n;j++)
+        {
+            if(!vis[j]&&(pos==-1||dis[j]<dis[pos]))
+            {
+                pos=j;
+            }
+        }
+        vis[pos]=true;
+        for(int j=0;j<n;j++)
+        {
+            if(j==pos)continue;
+            if(dis[j]==dis[pos]+mape[pos][j])
+            {
+                total[j]+=total[pos];
+                num[j]=max(num[j],num[pos]+a[j]);
+            }
+            if(dis[j]>dis[pos]+mape[pos][j])
+            {
+                dis[j]=dis[pos]+mape[pos][j];
+                total[j]=total[pos];
+                num[j]=num[pos]+a[j];
+            }
+        }
+    }
+}
+int main()
+{
+    cin>>n>>m>>c1>>c2;
+    init();
+    for(int i=0;i<n;i++){
+        scanf("%d",&a[i]);
+    }
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            if(i==j)mape[i][j]=0;
+            else mape[i][j]=INF;
+        }
+    }
+    for(int i=0;i<m;i++)
+    {
+        int x,y,z;
+        cin>>x>>y>>z;
+        mape[x][y]=mape[y][x]=z;
+    }
+    dijkstra(c1);
+    cout<<total[c2]<<" "<<num[c2];
+}
+
+
+
+

@@ -1,0 +1,41 @@
+#include<bits/stdc++.h>
+using namespace std;
+int s2i(string s)
+{
+    int ans=0;
+    for(int i=0;i<s.size();i++)
+        ans=ans*10+s[i]-'0';
+    return ans;
+}
+string func(string s)
+{
+    string ans="";
+    int eindex=s.find("E");
+    for(int i=0;i<eindex;i++)
+        if(s[i]!='.')ans+=s[i];
+    bool positive=s[eindex+1]=='+';
+    int t=s2i(s.substr(eindex+2));
+    if(t==0)
+    {
+        return s.substr(0,eindex);
+    }
+    int insert_index=1;
+    if(positive)//+
+    {
+        if(ans.size()<=t+1)ans+=string(t+1-ans.size(),'0');
+        else ans.insert(t+1,".");
+    }
+    else//-
+    {
+        ans="0."+string(t-1,'0')+ans;
+    }
+    return ans;
+}
+int main()
+{
+    string s;cin>>s;
+    if(s[0]=='-'){cout<<'-';s=s.substr(1);}
+    else if(s[0]=='+')s=s.substr(1);
+    s=func(s);
+    cout<<s;
+}

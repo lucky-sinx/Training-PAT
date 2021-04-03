@@ -1,0 +1,57 @@
+#include<iostream>
+#include<algorithm>
+#include<vector>
+#include<map>
+#include<bits/stdc++.h>
+using namespace std;
+struct polynode
+{
+    int x1;
+    float x2;
+    polynode(int a,float b):x1(a),x2(b){}
+    polynode(){}
+};
+bool cmp(polynode x,polynode y)
+{
+    return x.x1>y.x1;
+}
+const int MAXN=10;
+polynode p1[MAXN];
+polynode p2[MAXN];
+int n1,n2;
+polynode p[MAXN*MAXN];
+int main()
+{
+    cin>>n1;
+    for(int i=0;i<n1;i++)cin>>p1[i].x1>>p1[i].x2;
+    cin>>n2;
+
+    for(int i=0;i<n2;i++)cin>>p2[i].x1>>p2[i].x2;
+    for(int i=0;i<n1;i++)
+        for(int j=0;j<n2;j++)
+    {
+        p[i*n1+j].x1=p1[i].x1+p2[j].x1;
+        p[i*n1+j].x2=p1[i].x2*p2[j].x2;
+    }
+    sort(p,p+n1*n2,cmp);
+//    for(int i=0;i<n1*n2;i++)
+//        cout<<p[i].x1<<" "<<p[i].x2<<endl;
+    map<int,float> m;
+    for(int i=0;i<n1*n2;i++)m[p[i].x1]+=p[i].x2;
+    map<int,float>::iterator it;
+    int cnt=m.size(),i=0;
+    for(it=m.begin();it!=m.end();it++)
+    {
+        p[i].x1=it->first;
+        p[i].x2=it->second;
+        i++;
+    }
+    for(i=0;i<m.size();i++)
+        if(p[i].x2==0)cnt--;
+    sort(p,p+m.size(),cmp);
+    cout<<cnt;
+    for(int i=0;i<m.size();i++)
+//        cout<<" "<<p[i].x1<<" "<<p[i].x2;
+        if(p[i].x2!=0)
+            printf(" %d %.1f",p[i].x1,p[i].x2);
+}

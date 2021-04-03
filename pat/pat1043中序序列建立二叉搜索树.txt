@@ -1,0 +1,81 @@
+#include<iostream>
+#include<string>
+#include<bits/stdc++.h>
+#define NULL 0
+using namespace std;
+struct bitree
+{
+    int data;
+    bitree *l,*r;
+    bitree(int d):data(d),l(NULL),r(NULL){}
+};
+void Insert(bitree *&t,int data)
+{
+    if(t==NULL)
+        {t=new bitree(data);return;}
+    else if(data<t->data)Insert(t->l,data);
+    else Insert(t->r,data);
+
+}
+void pre1(bitree* t,vector<int> &v)
+{
+    if(t==NULL)return;
+    v.push_back(t->data);
+    pre1(t->l,v);
+    pre1(t->r,v);
+}
+void pre2(bitree* t,vector<int> &v)
+{
+    if(t==NULL)return;
+    v.push_back(t->data);
+    pre2(t->r,v);
+    pre2(t->l,v);
+}
+void post1(bitree* t,vector<int> &v)
+{
+    if(t==NULL)return;
+    post1(t->l,v);
+    post1(t->r,v);
+    v.push_back(t->data);
+}
+void post2(bitree* t,vector<int> &v)
+{
+    if(t==NULL)return;
+    post2(t->r,v);
+    post2(t->l,v);
+    v.push_back(t->data);
+}
+int main()
+{
+    int n;cin>>n;
+    bitree *t=NULL;
+    vector<int> a,t1,t2,t3,t4;
+    for(int i=0;i<n;i++){
+        int x;cin>>x;
+        Insert(t,x);
+        a.push_back(x);
+    }
+    pre1(t,t1);pre2(t,t2);
+    if(a==t1)
+    {
+        cout<<"YES"<<endl;
+        post1(t,t3);
+        for(int i=0;i<t3.size();i++)
+        {
+            if(i)cout<<" ";
+            cout<<t3[i];
+        }
+    }
+    else if(a==t2)
+    {
+        cout<<"YES"<<endl;
+        post2(t,t4);
+        for(int i=0;i<t4.size();i++)
+        {
+            if(i)cout<<" ";
+            cout<<t4[i];
+        }
+    }
+    else
+        cout<<"NO"<<endl;
+}

@@ -1,0 +1,46 @@
+#include<iostream>
+#include<cstdio>
+#include<string>
+#include<algorithm>
+#include<sstream>
+#include<vector>
+#include<queue>
+#include<bits/stdc++.h>
+#define NULL 0
+using namespace std;
+
+struct bitree{
+    char data;
+    bitree *left,*right;
+    bitree(char c):data(c),left(NULL),right(NULL){}
+};
+
+bitree *build(string s,int &i)
+{
+    char c=s[i++];
+    if(c=='#')return NULL;
+    bitree *res= new bitree(c);
+    res->left=build(s,i);
+    res->right=build(s,i);
+    return res;
+}
+
+void inorder(bitree *t)
+{
+    if(t==NULL)return;
+    inorder(t->left);
+    cout<<t->data<<' ';
+    inorder(t->right);
+}
+
+int main()
+{
+    string s;
+    while(cin>>s)
+    {
+        int x=0;
+        bitree *res=build(s,x);
+        inorder(res);
+        cout<<endl;
+    }
+}

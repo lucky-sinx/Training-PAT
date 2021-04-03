@@ -1,0 +1,104 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=1e5+5;
+vector<int> graph[N];
+map<int,int>leaf;
+bool vis[N];
+struct node
+{
+    int no;
+    int depth;
+    node(int n,int d):no(n),depth(d){}
+};
+int main()
+{
+    int n;double p,r;cin>>n>>p>>r;
+    r/=100;
+    for(int i=0;i<n;i++)
+    {
+        int k;cin>>k;
+        if(k==0)
+        {
+            int x;scanf("%d",&x);
+            leaf[i]=x;
+        }
+        else
+        {
+            int x;
+            while(k--)
+            {
+                scanf("%d",&x);
+                graph[i].push_back(x);
+            }
+        }
+    }
+    queue<node> q;
+    q.push(node(0,0));
+    double ans=0;
+    memset(vis,0,sizeof(vis));
+    vis[0]=true;
+    while(!q.empty())
+    {
+        node t=q.front();
+        int no=t.no,depth=t.depth;
+//        cout<<no<<endl;
+        q.pop();
+        if(graph[no].size()==0)
+        {
+            ans+=leaf[no]*p*pow(1+r,depth);
+//        cout<<no<<' '<<depth<<' '<<leaf[no]<<' '<<d<<endl;
+        }
+        else
+        {
+            for(int i=0;i<graph[no].size();i++)
+                if(vis[graph[no][i]]==false)
+                    q.push(node(graph[no][i],depth+1)),vis[graph[no][i]]=true;
+        }
+    }
+//    cout<<ans<<endl;
+    printf("%.1f",ans);
+}
+/*
+dfs：
+#include <cstdio>
+#include <vector>
+#include <cmath>
+using namespace std;
+struct node {
+    double data;
+    vector<int> child;
+};
+vector<node> v;
+double ans = 0.0, p, r;
+
+void dfs(int index, int depth) {
+    if(v[index].child.size() == 0) {
+        ans += v[index].data * pow(1 + r, depth);
+        return ;
+    }
+    for(int i = 0; i < v[index].child.size(); i++)
+        dfs(v[index].child[i], depth + 1);
+}
+int main() {
+    int n, k, c;
+    scanf("%d %lf %lf", &n, &p, &r);
+    r = r / 100;
+    v.resize(n);
+    for(int i = 0; i < n; i++) {
+        scanf("%d", &k);
+        if(k == 0) {
+            scanf("%lf", &v[i].data);
+        } else {
+            for(int j = 0; j < k; j++) {
+                scanf("%d", &c);
+                v[i].child.push_back(c);
+            }
+        }
+    }
+    dfs(0, 0);
+    printf("%.1f", ans * p);
+    return 0;
+}
+
+
+*/

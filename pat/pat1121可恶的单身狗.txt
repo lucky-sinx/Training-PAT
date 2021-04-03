@@ -1,0 +1,37 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=1e5+5;
+int couple[N]={-1};
+bool guests[N]={0};
+int main()
+{
+    int n;
+    cin>>n;
+    fill(couple,couple+N,-1);
+    for(int i=0;i<n;i++)
+    {
+        int x,y;cin>>x>>y;
+        couple[x]=y;
+        couple[y]=x;
+    }
+    int m;cin>>m;
+    vector<int> all,single;
+    for(int i=0;i<m;i++)
+    {
+        int x;cin>>x;
+        guests[x]=true;
+        all.push_back(x);
+    }
+    for(int i=0;i<all.size();i++)
+    {
+        if((couple[all[i]]==-1)||!guests[couple[all[i]]])
+            single.push_back(all[i]);
+    }
+    cout<<single.size()<<endl;
+    sort(single.begin(),single.end());
+    for(int i=0;i<single.size();i++)
+    {
+        if(i!=0)cout<<' ';
+        printf("%05d",single[i]);
+    }
+}

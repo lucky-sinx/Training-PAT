@@ -1,0 +1,31 @@
+#include<cstdio>
+#include<iostream>
+#include<string>
+using namespace std;
+/*
+一个正整数,如果它能被7整除,或者它的十进
+制表示法中某个位数上的数字为7, 
+则称其为与7相关的数.现求所有小于等于
+n(n<100)的与7无关的正整数的平方和。
+*/
+bool relate7(int i)
+{
+    bool flag=(i%7==0);
+    while(i)
+    {
+        if(i%10==7)
+            flag=true;
+        i/=10;
+    }
+    return flag;
+}
+int main()
+{
+    int x=0;
+    for(int i=0;i<100;i++)
+    {
+        if(!relate7(i))
+            x+=i*i;
+    }
+    cout<<x;
+}

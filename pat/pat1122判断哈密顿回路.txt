@@ -1,0 +1,44 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=202;
+int n,m,k;
+bool vis[N];
+bool g[N][N];
+bool judge(vector<int> path)
+{
+    if(path.size()!=n+1)return false;
+    memset(vis,0,sizeof(vis));
+    if(path[0]!=path[path.size()-1])return false;
+    for(int i=0;i<path.size()-1;i++)
+    {
+        if(vis[path[i]])return false;
+        else vis[path[i]]=true;
+    }
+    for(int i=1;i<path.size();i++)
+        if(g[path[i-1]][path[i]]==false)return false;
+    return true;
+}
+int main()
+{
+    cin>>n>>m;
+    memset(g,0,sizeof(g));
+    for(int i=0;i<m;i++)
+    {
+        int x,y;cin>>x>>y;
+        g[x][y]=g[y][x]=1;
+    }
+    cin>>k;
+    while(k--)
+    {
+        int cnt;cin>>cnt;
+        vector<int> path;
+        for(int i=0;i<cnt;i++){
+            int v;cin>>v;
+            path.push_back(v);
+        }
+        if(judge(path))
+            cout<<"YES"<<endl;
+        else
+            cout<<"NO"<<endl;
+    }
+}

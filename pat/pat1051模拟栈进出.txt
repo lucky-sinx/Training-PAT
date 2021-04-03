@@ -1,0 +1,35 @@
+#include<iostream>
+#include<stack>
+using namespace std;
+const int N=1001;
+int seq[N];
+int m,n,k;
+int main()
+{
+    cin>>m>>n>>k;
+    while(k--)
+    {
+        for(int i=0;i<n;i++)cin>>seq[i];
+        stack<int> s;
+        int k=1,pos=0;
+        s.push(k++);
+        bool flag=true;
+        while(!s.empty())
+        {
+            if(s.size()>m){flag=false;break;}
+            int top=s.top();
+            if(top==seq[pos])
+            {
+                s.pop();
+                pos++;
+                if(s.empty()&&k<=n)//空了才入栈
+                    s.push(k++);
+            }
+            else if(top>seq[pos]){flag=false;break;}
+            else    //top<seq[pos]
+                s.push(k++);
+        }
+        if(flag)cout<<"YES"<<endl;
+        else cout<<"NO"<<endl;
+    }
+}

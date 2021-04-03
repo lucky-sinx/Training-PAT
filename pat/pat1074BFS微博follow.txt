@@ -1,0 +1,55 @@
+#include<bits/stdc++.h>
+using namespace std;
+int n,l,k;
+const int N=1001;
+vector<int> follow[N];
+bool vis[N];
+struct node
+{
+    int no;int layer;
+    node(int n,int l):no(n),layer(l){}
+};
+int bfs(int start)
+{
+    memset(vis,0,sizeof(vis));
+    queue<node> q;
+    q.push(node(start,0));
+    vis[start]=true;
+    int cnt=0;
+    while(!q.empty())
+    {
+        node now=q.front();
+        int no=now.no;
+        q.pop();
+        for(int i=0;i<follow[no].size();i++)
+        {
+            int follow_no=follow[no][i];
+            if(!vis[follow_no]&&now.layer<l)
+            {
+                cnt++;
+                q.push(node(follow_no,now.layer+1));
+                vis[follow_no]=true;
+            }
+        }
+    }
+    return cnt;
+}
+int main()
+{
+    cin>>n>>l;
+    for(int i=1;i<=n;i++)
+    {
+        int followcnt;cin>>followcnt;
+        while(followcnt--)
+        {
+            int x;cin>>x;
+            follow[x].push_back(i);
+        }
+    }
+    cin>>k;
+    while(k--)
+    {
+        int start;cin>>start;
+        cout<<bfs(start)<<endl;
+    }
+}

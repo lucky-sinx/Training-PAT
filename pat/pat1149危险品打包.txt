@@ -1,0 +1,42 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=1e5+5;
+vector<int> mp[N];
+bool vis[N];
+int main()
+{
+    int n,m;
+    cin>>n>>m;
+    for(int i=0;i<n;i++)
+    {
+        int x,y;
+        scanf("%d %d",&x,&y);
+        mp[x].push_back(y);
+        mp[y].push_back(x);
+    }
+    for(int i=0;i<m;i++)
+    {
+        memset(vis,0,sizeof(vis));
+        int k;vector<int> v;
+        cin>>k;
+        for(int i=0;i<k;i++){
+            int x;scanf("%d",&x);
+            v.push_back(x);
+            vis[x]=1;
+        }
+        bool flag=1;
+        for(int i=0;i<k-1;i++)
+            if(flag)
+            {
+                for(int j=0;j<mp[v[i]].size();j++)
+                    if(vis[mp[v[i]][j]]){
+                        flag=0;
+                        break;
+                    }
+            }
+            else
+                break;
+        if(flag)cout<<"Yes"<<endl;
+        else cout<<"No"<<endl;
+    }
+}

@@ -1,0 +1,102 @@
+#include<bits/stdc++.h>
+#include<unordered_map>
+using namespace std;
+const int N=1e4+2;
+int n,m;
+struct node
+{
+    string card;
+    char type;
+    int score;
+    int site;
+    int date;
+    int no;
+};
+struct node1
+{
+    int site;
+    int times;
+};
+node data[N];
+bool cmp(const node &x,const node &y)
+{
+    if(x.score!=y.score)return x.score>y.score;
+    else return x.card<y.card;
+}
+bool cmp1(const node1 &x,const node1 &y)
+{
+    if(x.times!=y.times)return x.times>y.times;
+    else return x.site<y.site;
+}
+int main()
+{
+//    ios::sync_with_stdio(false);
+    int n,m;
+    cin>>n>>m;
+    string s;int score;
+    for(int i=0;i<n;i++)
+    {
+        cin>>s>>score;
+        data[i].card=s;data[i].score=score;
+        data[i].site=stoi(s.substr(1,3));
+        data[i].date=stoi(s.substr(4,6));
+        data[i].type=s[0];
+        data[i].no=stoi(s.substr(10));
+//        cout<<data[i].type<<data[i].site<<data[i].date<<data[i].no<<data[i].score<<endl;
+    }
+    for(int i=0;i<m;i++)
+    {
+        int type;string term;
+        cin>>type>>term;
+        cout<<"Case "<<i+1<<": "<<type<<" "<<term<<endl;
+        if(type==1)
+        {
+            char c=term[0];
+            vector<node> ans;
+            for(int i=0;i<n;i++)
+                if(data[i].type==c)ans.push_back(data[i]);
+            if(ans.size()==0)cout<<"NA"<<endl;
+            else{
+                sort(ans.begin(),ans.end(),cmp);
+                for(int i=0;i<ans.size();i++)
+                    printf("%s %d\n",ans[i].card.c_str(),ans[i].score);
+            }
+        }
+        else if(type==2)
+        {
+            int cnt=0,sumsite=0;
+            for(int i=0;i<n;i++)
+            {
+                int site=stoi(term);
+                if(data[i].site==site)
+                {
+                    cnt++;
+                    sumsite+=data[i].score;
+                }
+            }
+            if(cnt==0)cout<<"NA"<<endl;
+            else cout<<cnt<<' '<<sumsite<<endl;
+        }
+        else if(type==3)
+        {
+            unordered_map<int,int> mp;
+            int date=stoi(term);
+            for(int i=0;i<n;i++)
+                if(date==data[i].date)
+                    mp[data[i].site]++;
+            vector<node1> ans;
+            for(unordered_map<int,int>::iterator it=mp.begin();it!=mp.end();it++)
+            {
+                node1 t;
+                t.site=it->first;t.times=it->second;
+                ans.push_back(t);
+            }
+            if(ans.size()==0)cout<<"NA"<<endl;
+            else{
+                sort(ans.begin(),ans.end(),cmp1);
+                for(int i=0;i<ans.size();i++)
+                    printf("%03d %d\n",ans[i].site,ans[i].times);
+            }
+        }
+    }
+}

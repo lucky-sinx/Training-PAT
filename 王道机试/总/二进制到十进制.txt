@@ -1,0 +1,72 @@
+#include<string>
+#include<cstdio>
+#include<iostream>
+#include<queue>
+#include<vector>
+using namespace std;
+string Divide(string s,int x)//字符串除整数
+{
+    int res=0;
+    for(int i=0;i<s.size();i++)
+    {
+        int c=res*10+s[i]-'0';
+        s[i]=c/x+'0';
+        res=c%x;
+    }
+    int pos=0;
+    while(s[pos]=='0')pos++;
+    return s.substr(pos);
+}
+string Multiply(string s,int x)
+{
+    int carry=0;//进位
+    for(int i=s.size()-1;i>=0;i--)
+    {
+        int current=carry+(s[i]-'0')*x;
+        s[i]=current%10+'0';
+        carry=current/10;
+    }
+    if(carry!=0)
+    {
+        s='1'+s;
+    }
+    return s;
+}
+string Add(string s,int x)
+{
+    int carry=x;
+    for(int i=s.size()-1;i>=0;i--)
+    {
+        int current=carry+s[i]-'0';
+        s[i]=current%10+'0';
+        carry=current/10;
+    }
+    if(carry!=0)
+    {
+        s='1'+s;
+    }
+    return s;
+}
+int main()
+{
+//    cout<<Multiply("123",2);
+    string s;
+    while(cin>>s)
+    {
+        vector<int> res;
+        while(s.size()!=0)
+        {
+            int last=s[s.size()-1]-'0';
+            res.push_back(last%2);
+            s=Divide(s,2);
+        }
+        //res中是二进制
+        string answer="0";
+        for(int i=0;i<res.size();i++)
+        {
+            answer=Multiply(answer,2);
+            answer=Add(answer,res[i]);
+        }
+        cout<<answer<<endl;
+    }
+}

@@ -1,0 +1,88 @@
+#include<iostream>
+#include<cstdio>
+#include<vector>
+#include<queue>
+#include<cstring>
+#include<map>
+#define INT_MAX 1e7
+using namespace std;
+const int MAXN=1001;
+const int INF=INT_MAX;
+int dis[MAXN];
+int cost[MAXN];
+map<int,int> visit;
+struct edge{
+    int to;
+    int len;
+    int cost;
+    edge(int t,int l,int c):to(t),len(l),cost(c){}
+};
+vector<edge> graph[MAXN];
+
+struct Point{
+    int to;
+    int len;
+    Point(int t,int l):to(t),len(l){}
+    bool operator< (const Point &p) const
+    {
+        return len>p.len;
+    }
+};
+void dijkstra(int s)
+{
+    priority_queue<Point> mypriorityqueue;
+    mypriorityqueue.push(Point(s,0));
+    dis[s]=0;
+    cost[s]=0;
+    while(!mypriorityqueue.empty())
+    {
+        int nearest=mypriorityqueue.top().to;
+        mypriorityqueue.pop();
+        if(visit.find(nearest)!=visit.end())continue;
+        visit[nearest]=1;
+        for(int i=0;i<graph[nearest].size();i++)
+        {
+            int to=graph[nearest][i].to;
+            int len=graph[nearest][i].len;
+            int cos=graph[nearest][i].cost;
+            if((dis[to]==dis[nearest]+len)&&cost[to]>cost[nearest]+cos||
+               dis[to]>dis[nearest]+len)
+            {
+                dis[to]=dis[nearest]+len;
+                cost[to]=cost[nearest]+cos;
+                mypriorityqueue.push(Point(to,dis[to]));
+            }
+        }
+    }
+    return;
+}
+int main()
+{
+    int n,m;
+    while(cin>>n>>m)
+    {
+        if(m==0&&n==0)break;
+        memset(graph,0,sizeof(graph));
+        visit.clear();
+        fill(dis,dis+MAXN,INF);
+        fill(cost,cost+MAXN,INF);        
+        int from,to,length,cos;
+        while(m--)
+        {
+            cin>>from>>to>>length>>cos;
+            graph[from].push_back(edge(to,length,cos));
+            graph[to].push_back(edge(from,length,cos));
+        }
+        int s,t;
+        cin>>s>>t;
+        dijkstra(s);
+        cout<<dis[t]<<' '<<cost[t]<<endl;
+    }
+}
+
+
+
+
+
+
+

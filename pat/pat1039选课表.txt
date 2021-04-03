@@ -1,0 +1,43 @@
+#include <vector>
+#include <string>
+#include <map>
+#include <set>
+#include <cstdio>
+#include <iostream>
+#include <queue>
+#include <algorithm>
+using namespace std;
+int r[] = {26*26*26,26*26,26,1};
+int chartoint(char *a){
+    return (a[0] - 'A' + 10) * r[0] + (a[1] - 'A' + 10) * r[1] + (a[2] - 'A' + 10) * r[2] + (a[3] - '0');
+}
+int main(){
+    int n,k;
+    map<int,vector<int>> rec;
+    scanf("%d %d",&n,&k);
+    for(int i = 0;i < k;i++){
+        int id,m;
+        scanf("%d %d",&id,&m);
+        for(int j = 0;j < m;j++){
+            char t[5];
+            scanf("%s",t);
+            int tmp(chartoint(t));
+            rec[tmp].push_back(id);
+        }
+    }
+    for(int i = 0;i < n;i++){
+        char qn[5];
+        scanf("%s",qn);
+        printf("%s",qn);
+        int q(chartoint(qn));
+        printf(" %d",rec[q].size());
+        if(rec[q].size() != 0){
+            sort(rec[q].begin(),rec[q].end());
+            for(int i = 0;i < rec[q].size();i++){
+                printf(" %d",rec[q][i]);
+            }
+        }
+        printf("\n");
+    }
+    return 0;
+}

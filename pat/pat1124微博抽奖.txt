@@ -1,0 +1,36 @@
+#include<bits/stdc++.h>
+using namespace std;
+map<string,bool>hash_;
+vector<string >v;
+int main()
+{
+    int n,m,t;cin>>n>>m>>t;
+    string s;
+    for(int i=0;i<n;i++)
+    {
+        cin>>s;
+        v.push_back(s);
+    }
+    bool flag=false;
+    for(int i=t-1;i<n;i+=m)
+    {
+        if(hash_[v[i]]==false)
+        {
+            cout<<v[i]<<endl;
+            hash_[v[i]]=true;
+            flag=true;
+        }
+        else
+        {
+            while(i<n&&hash_[v[i]]==true)i++;
+            if(i<n)
+            {
+                cout<<v[i]<<endl;
+                hash_[v[i]]=true;
+                flag=true;
+            }
+        }
+    }
+    if(!flag)
+        cout<<"Keep going...";
+}

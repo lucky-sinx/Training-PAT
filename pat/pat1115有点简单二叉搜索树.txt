@@ -1,0 +1,46 @@
+#include<iostream>
+#include<vector>
+#include<cmath>
+using namespace std;
+struct node
+{
+	int data;
+	int depth;
+	node* left, * right;
+	node(int d, int dep) :data(d), depth(dep),left(NULL),right(NULL){}
+};
+vector<node*> a;
+int maxdepth = -1;
+int t1, t2;
+
+void Insert(node *&t, int d, int dep)
+{
+	if (t == NULL) {
+		t = new node(d, dep);
+		a.push_back(t);
+		maxdepth = maxdepth > dep ? maxdepth : dep;
+		return;
+	}
+	if (d <= t->data)
+		Insert(t->left, d, dep+1);
+	else
+		Insert(t->right, d, dep+1);
+}
+int main()
+{
+	int n;
+	cin >> n;
+	node* t = NULL;
+	for (int i = 0; i < n; i++)
+	{
+		int x; cin >> x;
+		Insert(t, x, 0);
+	}
+	t1 = t2 = 0;
+	for (int i = 0; i < a.size(); i++)
+	{
+		if (a[i]->depth == maxdepth - 1)t1++;
+		else if (a[i]->depth == maxdepth)t2++;
+	}
+	cout << t2 << " + " << t1 << " = " << t1 + t2 << endl;
+}

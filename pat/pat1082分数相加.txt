@@ -1,0 +1,45 @@
+#include<bits/stdc++.h>
+using namespace std;
+long long gcd(long long a,long long b)
+{
+    if(b==0)return a;
+    else return gcd(b,a%b);
+}
+long long  lcm(long long a,long long b)
+{
+    return a*b/gcd(a,b);
+}
+void add(long long  &a,long long &b,long long na,long long nb)
+{
+    long long ansb=lcm(b,nb);
+    long long ansa=a*ansb/b+na*ansb/nb;
+    long long g=gcd(ansa,ansb);
+    if(g<0)g=-g;
+    ansa/=g;ansb/=g;
+    a=ansa;b=ansb;
+}
+int main()
+{
+    long long a,b,na,nb;
+    long long n;
+    cin>>n;
+    a=0;b=1;
+    while(n--)
+    {
+        scanf("%lld/%lld",&na,&nb);
+        add(a,b,na,nb);
+    }
+    bool flag=false;
+    if(a<0){cout<<'-';a=-a;flag=true;}
+    if(a==0||b==1)cout<<a;
+    else if(a>b&&a%b!=0){
+        cout<<a/b<<' '<<a%b<<'/';
+        if(flag)cout<<-b;
+        else cout<<b;
+    }
+    else if(a%b==0)
+    {
+        cout<<a/b;
+    }
+    else cout<<a<<'/'<<b;
+}

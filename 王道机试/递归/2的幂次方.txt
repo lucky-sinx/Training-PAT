@@ -1,0 +1,46 @@
+#include<iostream>
+#include<cstdio>
+#include<string>
+#include<algorithm>
+#include<sstream>
+#include<vector>
+using namespace std;
+string func(int n)
+{
+    string res="";
+    string s1="2(",s2=")";
+    vector<int> t;
+    int k=-1;
+    while(n)
+    {
+        k++;
+        if(n%2==1)
+            t.push_back(k);
+        n/=2;
+    }
+    for(int i=t.size()-1;i>=0;i--)
+    {
+        string b;
+        if(t[i]==0)b='0';
+        else if(t[i]==1)
+        {
+            res+='2';
+            if(i!=0)
+                res+='+';
+            continue;
+        }
+        else b=func(t[i]);
+        res+=s1;
+        res+=b;
+        res+=s2;
+        if(i!=0)
+            res+='+';
+    }
+    return res;
+}
+int main()
+{
+    int n;
+    while(cin>>n)
+        cout<<func(n)<<endl;
+}

@@ -1,0 +1,38 @@
+#include<string>
+#include<cstdio>
+#include<iostream>
+#include<queue>
+using namespace std;
+
+int main()
+{
+    int n,p,m;
+    while(cin>>n>>p>>m)
+    {
+        if((!n)&&(!p)&&(!m))break;
+        queue<int> q;
+        for(int i=0;i<n;i++)q.push(i+1);
+        for(int i=1;i<p;i++){
+            int x=q.front();
+            q.pop();
+            q.push(x);
+        }
+        int no=1;
+        while(!q.empty()){
+            while(no!=m){
+                int x=q.front();
+                q.pop();
+                q.push(x);
+                no++;
+            }
+            no=1;
+            int x=q.front();
+            q.pop();
+            if(q.size())
+                cout<<x<<',';
+            else
+                cout<<x;
+        }
+        cout<<endl;
+    }
+}

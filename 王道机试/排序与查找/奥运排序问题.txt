@@ -1,0 +1,110 @@
+#include<bits/stdc++.h>
+#include<cstdio>
+#include<iostream>
+#include<algorithm>
+#include<string>
+using namespace std;
+typedef struct node{
+    int no;
+    int gold;
+    int medel;
+    float gold_cent;
+    float medel_cent;
+    int best_rank;
+    int best_ranktype;
+}nation;
+bool compare0(nation x,nation y)
+{
+    return x.no<y.no;
+}
+bool compare1(nation x,nation y){
+    return x.gold>y.gold;
+}
+bool compare2(nation x,nation y){
+    return x.medel>y.medel;
+}
+bool compare3(nation x,nation y){
+    return x.gold_cent>y.gold_cent;
+}
+bool compare4(nation x,nation y){
+    return x.medel_cent>y.medel_cent;
+}
+bool nation_sort(nation *s,int sort_type,int n)
+{
+    if(sort_type==1)sort(s,s+n,compare1);
+    else if(sort_type==2)sort(s,s+n,compare2);
+    else if(sort_type==3)sort(s,s+n,compare3);
+    else if(sort_type==4)sort(s,s+n,compare4);
+    //get排名
+    int ranking[n];
+    ranking[0]=1;
+    bool flag;
+    for(int i=1;i<n;i++)
+    {
+        if(sort_type==1)flag=(s[i].gold==s[i-1].gold);
+        else if(sort_type==2)flag=(s[i].medel==s[i-1].medel);
+        else if(sort_type==3)flag=(s[i].gold_cent==s[i-1].gold_cent);
+        else if(sort_type==4)flag=(s[i].medel_cent==s[i-1].medel_cent);
+        if(flag)
+            ranking[i]=ranking[i-1];
+        else
+            ranking[i]=i+1;
+    }
+    for(int i=0;i<n;i++)
+    {
+        if(sort_type==1)
+        {
+            s[i].best_rank=ranking[i];
+            s[i].best_ranktype=1;
+        }
+        else
+        {
+            if(ranking[i]<s[i].best_rank)
+            {
+                s[i].best_rank=ranking[i];
+                s[i].best_ranktype=sort_type;
+            }
+        }
+    }
+}
+
+int main()
+{
+    int n,m,c,gold,medel;
+    while(scanf("%d%d",&n,&m)!=EOF){
+        if(!n||!m){
+            cout<<endl;
+            continue;
+        }
+        nation s[n],s1[m];
+        for(int i=0;i<n;i++){
+            s[i].no=i;
+            cin>>gold>>medel>>c;
+            s[i].gold=gold;
+            s[i].medel=medel;
+            s[i].gold_cent=s[i].gold*1.0/c;
+            s[i].medel_cent=s[i].medel*1.0/c;
+            s[i].best_rank=INT_MAX;
+        }
+        for(int i=0;i<m;i++)
+        {
+            int k;
+            cin>>k;
+            s1[i].no=s[k].no;
+            s1[i].gold=s[k].gold;
+            s1[i].medel=s[k].medel;
+            s1[i].medel_cent=s[k].medel_cent;
+            s1[i].gold_cent=s[k].gold_cent;
+            s1[i].best_rank=s[k].best_rank;
+            s1[i].best_ranktype=s[k].best_ranktype;
+        }
+        for(int i=1;i<=4;i++)
+            nation_sort(s1,i,m);
+        sort(s1,s1+m,compare0);
+        for(int i=0;i<m;i++)
+        {
+            cout<<s1[i].best_rank<<':'<<s1[i].best_ranktype<<endl;
+        }
+        cout<<endl;
+    }
+}

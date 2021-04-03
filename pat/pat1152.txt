@@ -1,0 +1,36 @@
+#include<bits/stdc++.h>
+using namespace std;
+bool isprime(int x)
+{
+    if(x<2)return false;
+    for(int i=2;i*i<=x;i++)
+        if(x%i==0)return false;
+    return true;
+}
+int getnum(string s)
+{
+    int ans=0;
+    for(int i=0;i<s.size();i++)
+        ans=ans*10+s[i]-'0';
+    return ans;
+}
+int main()
+{
+    string s;
+    int n,k;
+    cin>>n>>k>>s;
+    bool flag=0;
+    for(int i=0;i<s.size()-k+1;i++)
+    {
+        string t=s.substr(i,k);
+//        cout<<t<<endl;
+        int num=getnum(t);
+        if(isprime(num))
+        {
+            cout<<t<<endl;
+            flag=1;
+            break;
+        }
+    }
+    if(flag==0)cout<<404<<endl;
+}

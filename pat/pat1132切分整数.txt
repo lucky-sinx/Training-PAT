@@ -1,0 +1,29 @@
+#include<bits/stdc++.h>
+using namespace std;
+long long getnum(string s)
+{
+    long long ans=0;
+    for(int i=0;i<s.size();i++)
+        ans=ans*10+s[i]-'0';
+    return ans;
+}
+int main()
+{
+    string s,s1,s2;
+    long long t;
+    cin>>t;
+    while(t--)
+    {
+        long long t,t1,t2;
+        cin>>s;
+        s1=s.substr(0,s.size()/2);
+        s2=s.substr(s.size()/2);
+        t=getnum(s);
+        t1=getnum(s1);
+        t2=getnum(s2);
+//        cout<<t<<' '<<t1<<' '<<t2<<endl;
+        if(t1*t2==0){cout<<"No"<<endl;continue;}
+        if(t%(t1*t2)==0)cout<<"Yes"<<endl;
+        else cout<<"No"<<endl;
+    }
+}

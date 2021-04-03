@@ -1,0 +1,44 @@
+#include<iostream>
+#include<cstdio>
+#include<string>
+#include<algorithm>
+#include<sstream>
+#include<vector>
+#include<queue>
+#include<bits/stdc++.h>
+using namespace std;
+const int MAXN=100000;
+bool visited[MAXN];
+
+struct status{
+    int n;
+    int t;
+    status(int n,int t):n(n),t(t){}
+};
+int bfs(int n,int k)
+{
+    queue<status> q;
+    q.push(status(n,0));
+    visited[n]=true;
+    while(!q.empty())
+    {
+        status now=q.front();
+        if(now.n==k)
+            return now.t;
+        q.pop();
+        status next1(now.n+1,now.t+1),next2(now.n-1,now.t+1),next3(now.n*2,now.t+1);
+        if(next1.n>=0&&next1.n<MAXN&&!visited[next1.n])
+            visited[next1.n]=true,q.push(next1);
+        if(next2.n>=0&&next2.n<MAXN&&!visited[next2.n])
+            visited[next2.n]=true,q.push(next2);
+        if(next3.n>=0&&next3.n<MAXN&&!visited[next3.n])
+            visited[next3.n]=true,q.push(next3);
+    }
+}
+int main()
+{
+    int n,k;
+    cin>>n>>k;
+    memset(visited,0,sizeof(visited));
+    cout<<bfs(n,k)<<endl;
+}

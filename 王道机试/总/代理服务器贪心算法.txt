@@ -1,0 +1,54 @@
+#include<string>
+#include<cstdio>
+#include<iostream>
+#include<queue>
+#include<vector>
+#include<stack>
+#include<cmath>
+#include<algorithm>
+using namespace std;
+vector<string> src,dst;
+
+int main()
+{
+    int m,n;
+    cin>>m;
+    for(int i=0;i<m;i++)
+    {
+        string s;
+        cin>>s;
+        src.push_back(s);
+    }
+    cin>>n;
+    for(int i=0;i<n;i++)
+    {
+        string s;
+        cin>>s;
+        dst.push_back(s);
+    }
+    vector<int> data;
+    for(int i=0;i<n;i++)
+        for(int j=0;j<m;j++)
+            if(src[j]==dst[i])
+                data.push_back(j);
+//    for(int i=0;i<data.size();i++)cout<<i<<endl;
+    int i=0,res=0,now_index=-1;
+    bool flag=true;
+    while(flag&&i<data.size())
+    {
+        int Max=0;
+        for(int j=0;j<m;j++)
+        {
+            int k=i;
+            while(data[k]!=j&&k<data.size())k++;
+            Max=max(Max,k-i);
+        }
+        if(Max==0)
+            flag=false;
+        res++;
+        i+=Max;
+    }
+    if(flag)
+        cout<<res-1<<endl;
+    else cout<<"-1"<<endl;
+}

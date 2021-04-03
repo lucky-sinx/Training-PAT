@@ -1,0 +1,29 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=40;
+int n;
+bool hash_[N]={0};
+int main()
+{
+    cin>>n;
+    for(int i=0;i<n;i++)
+    {
+        int x;cin>>x;
+        int s=0;
+        while(x){s+=x%10;x/=10;}
+        hash_[s]=true;
+    }
+    int cnt=0;
+    for(int i=0;i<40;i++)if(hash_[i])cnt++;
+    cout<<cnt<<endl;
+    bool flag=1;
+    for(int i=0;i<40;i++)
+    {
+        if(hash_[i])
+        {
+            if(!flag)cout<<' ';
+            else flag=0;
+            cout<<i;
+        }
+    }
+}

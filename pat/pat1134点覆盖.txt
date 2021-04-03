@@ -1,0 +1,31 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=1e4+5;
+int from[N];
+int to[N];
+bool hash_[N];
+int main()
+{
+    int n,m;cin>>n>>m;
+    for(int i=0;i<m;i++)
+        cin>>from[i]>>to[i];
+    int k;cin>>k;
+    while(k--)
+    {
+        memset(hash_,0,sizeof(hash_));
+        int a;cin>>a;
+        for(int i=0;i<a;i++)
+        {
+            int x;cin>>x;
+            hash_[x]=true;
+        }
+        bool flag=true;
+        for(int i=0;i<m;i++)
+        {
+            if(!hash_[from[i]]&&!hash_[to[i]])
+                {flag=false;break;}
+        }
+        if(flag)cout<<"Yes"<<endl;
+        else cout<<"No"<<endl;
+    }
+}

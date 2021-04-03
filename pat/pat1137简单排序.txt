@@ -1,0 +1,70 @@
+#include<bits/stdc++.h>
+#include<map>
+using namespace std;
+const int N=1e4+5;
+struct node
+{
+    string id;
+    int gp,gmid,gfin,g;
+    bool ok;
+    node():gp(-1),gmid(-1),gfin(-1),g(-1){}
+};
+bool cmp(node x,node y)
+{
+    if(x.g!=y.g)return x.g>y.g;
+    else return x.id<y.id;
+}
+node student[N*3];
+map<string, int> hash_;
+vector<node> v;
+int p,m,n;
+int main()
+{
+    cin>>p>>m>>n;
+    int no=0;
+    for(int i=0;i<p;i++)
+    {
+        string id;cin>>id;
+        int gp;cin>>gp;
+        if(hash_.find(id)==hash_.end())
+            hash_[id]=no++;
+        student[hash_[id]].id=id;
+        student[hash_[id]].gp=gp;
+    }
+    for(int i=0;i<m;i++)
+    {
+        string id;cin>>id;
+        int gmid;cin>>gmid;
+        if(hash_.find(id)==hash_.end())
+            hash_[id]=no++;
+        student[hash_[id]].id=id;
+        student[hash_[id]].gmid=gmid;
+    }
+    for(int i=0;i<n;i++)
+    {
+        string id;cin>>id;
+        int gfin;cin>>gfin;
+        if(hash_.find(id)==hash_.end())
+            hash_[id]=no++;
+        student[hash_[id]].id=id;
+        student[hash_[id]].gfin=gfin;
+    }
+    for(int i=0;i<no;i++)
+    {
+        if(student[i].gp>=200)
+        {
+            float t;
+            if(student[i].gmid>student[i].gfin)
+                t=student[i].gmid*0.4+student[i].gfin*0.6;
+            else
+                t=student[i].gfin;
+            t=min(t,100.0f);
+            student[i].g=floor(t+0.5);
+            if(student[i].g>=60)
+                v.push_back(student[i]);
+        }
+    }
+    sort(v.begin(),v.end(),cmp);
+    for(int i=0;i<v.size();i++)
+        cout<<v[i].id<<' '<<v[i].gp<<' '<<v[i].gmid<<' '<<v[i].gfin<<' '<<v[i].g<<endl;
+}

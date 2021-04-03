@@ -1,0 +1,16 @@
+#include<string>
+#include<cstdio>
+#include<iostream>
+using namespace std;
+int getnum(string s)
+{
+    int res=0;
+    for(int i=0;i<s.size();i++)res+=s[i]-'0';
+    return res;
+}
+int main()
+{
+    string s1,s2;
+    while(cin>>s1>>s2)
+        cout<<getnum(s1)*getnum(s2)<<endl;
+}

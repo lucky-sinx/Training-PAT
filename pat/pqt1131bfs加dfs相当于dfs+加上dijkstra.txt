@@ -1,0 +1,108 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=1e4+5;
+const int inf=99999999;
+
+int n,m,q;
+struct node{
+    int to,line;
+    node(int t,int l):to(t),line(l){}
+};
+vector<node> g[N],temp,ans;
+bool vis[N];
+int dis[N];
+int min_tran,min_stop;
+int bfs(int s,int t)
+{
+    memset(vis,0,sizeof(0));
+    queue<int> q;
+    q.push(s);
+    dis[s]=0;
+    vis[s]=true;
+    while(!q.empty())
+    {
+        int now=q.front();
+        q.pop();
+        for(int i=0;i<g[now].size();i++)
+        {
+            if(!vis[g[now][i].to])
+            {
+                q.push(g[now][i].to);
+                vis[g[now][i].to]=true;
+                dis[g[now][i].to]=dis[now]+1;
+            }
+        }
+    }
+    return dis[t];
+}
+int get_trantimes()
+{
+    int ans=0;
+    for(int i=1;i<temp.size();i++)
+        if(temp[i-1].line!=temp[i].line)ans++;
+    return ans;
+}
+void dfs(int s,int t,int stop)
+{
+    if(s==t){
+        int t=get_trantimes();
+        if(t<min_tran)ans=temp,min_tran=t;
+    }
+    else if(stop==min_stop)return;
+    for(int i=0;i<g[s].size();i++)
+    {
+        int to=g[s][i].to;
+        if(!vis[to]&&dis[to]==dis[s]+1)
+        {
+            vis[to]=true;
+            temp.push_back(g[s][i]);
+            dfs(to,t,stop+1);
+            temp.pop_back();
+            vis[to]=false;
+        }
+    }
+}
+int main()
+{
+    cin>>n;
+    for(int i=0;i<N;i++)g[i].clear();
+    int s,t;
+    for(int i=1;i<=n;i++)
+    {
+        cin>>m;
+        cin>>s;
+        for(int j=1;j<m;j++)
+        {
+            cin>>t;
+            g[s].push_back(node(t,i));
+            g[t].push_back(node(s,i));
+            s=t;
+        }
+    }
+    cin>>q;
+    while(q--)
+    {
+        cin>>s>>t;
+        min_stop=bfs(s,t);//供之后剪枝
+        temp.clear();
+        min_tran=inf;
+        memset(vis,0,sizeof(vis));
+
+        dfs(s,t,0);
+        bool flag=false;
+        vector<node> pt;
+        for(int i=1;i<ans.size();i++)
+        {
+            if(ans[i].line!=ans[i-1].line)
+            {
+                pt.push_back(ans[i-1]);
+                if(i==ans.size()-1)flag=true,pt.push_back(ans[i]);
+            }
+        }
+        if(!flag)pt.push_back(ans[ans.size()-1]);
+        cout<<min_stop<<endl;
+        if(pt.size())
+            printf("Take Line#%d from %04d to %04d.\n",pt[0].line, s, pt[0].to);
+        for(int i=1; i<pt.size(); i++) printf("Take Line#%d from %04d to %04d.\n",pt[i].line, pt[i-1].to, pt[i].to);
+    }
+}

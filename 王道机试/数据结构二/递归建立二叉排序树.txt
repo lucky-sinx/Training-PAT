@@ -1,0 +1,47 @@
+#include<iostream>
+#include<cstdio>
+#include<string>
+#include<algorithm>
+#include<sstream>
+#include<vector>
+#include<queue>
+#include<bits/stdc++.h>
+#define NULL 0
+using namespace std;
+
+struct bitree{
+    char data;
+    bitree *left,*right;
+    bitree(char c):data(c),left(NULL),right(NULL){}
+};
+
+bitree *Insert(bitree *&root,int x,int f)
+{
+    if(root==NULL)
+    {
+        root=new bitree(x);
+        cout<<f<<endl;
+    }
+    else if(x<root->data)
+    {
+        root->left=Insert(root->left,x,root->data);
+    }
+    else
+        root->right=Insert(root->right,x,root->data);
+    return root;
+}
+int main()
+{
+    int n;
+    while(cin>>n)
+    {
+        int x;
+        bitree *t=NULL;
+        while(n--)
+        {
+            cin>>x;
+            Insert(t,x,-1);
+        }
+
+    }
+}

@@ -1,0 +1,48 @@
+#include<iostream>
+#include<string>
+using namespace std;
+int char2int(char c)
+{
+    if(c>='0'&&c<='9')return c-'0';
+    else return c-'a'+10;
+}
+long long getnum(string s,int radix)
+{
+    long long res=0;
+    for(int i=0;i<s.size();i++)
+    {
+        res*=radix;
+        res+=char2int(s[i]);
+    }
+    return res;
+}
+int main()
+{
+    string s1,s2;
+    int tag,radix;
+    string s,t;
+    cin>>s1>>s2>>tag>>radix;
+    if(tag==1)s=s1,t=s2;
+    else s=s2,t=s1;
+    //输入处理
+    long long snum,tnum=0;
+    snum=getnum(s,radix);
+//    cout<<snum<<endl;
+    radix=2;
+    for(int i=0;i<t.size();i++)
+        radix=max(radix,char2int(t[i]));
+    bool flag=false;
+    for(;radix<36;radix++)
+    {
+        tnum=getnum(t,radix);
+        if(snum==tnum)
+        {
+            flag=true;
+            break;
+        }
+        if(snum<tnum)
+            break;
+    }
+    if(flag)cout<<radix<<endl;
+    else cout<<"Impossible"<<endl;
+}

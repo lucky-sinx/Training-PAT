@@ -1,0 +1,22 @@
+#include<bits/stdc++.h>
+using namespace std;
+map<int,bool> mp;
+int n;
+int max_=0;
+int main()
+{
+    cin>>n;
+    for(int i=0;i<n;i++)
+    {
+        int x;cin>>x;
+        mp[x]=true;
+        max_=max(max_,x);
+    }
+    int i=1;
+    for(;i<=max_+1;i++)
+    {
+        if(mp[i]==false)
+            break;
+    }
+    cout<<i<<endl;
+}

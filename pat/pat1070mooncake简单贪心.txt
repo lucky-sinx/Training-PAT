@@ -1,0 +1,36 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct node
+{
+    float weight;
+    float price;
+};
+bool cmp(node x,node y){return x.price/x.weight>y.price/y.weight;}
+const int N=1001;
+node data[N];
+int main()
+{
+    int n,maxweight;
+    cin>>n>>maxweight;
+    for(int i=0;i<n;i++)cin>>data[i].weight;
+    for(int i=0;i<n;i++)cin>>data[i].price;
+    sort(data,data+n,cmp);
+    int i=0;
+    float ans=0;
+    while(maxweight!=0&&i<n)
+    {
+        if(maxweight>=data[i].weight)
+        {
+            maxweight-=data[i].weight;
+            ans+=data[i].price;
+            i++;
+        }
+        else
+        {
+            ans+=data[i].price*(maxweight/data[i].weight);
+            maxweight=0;
+            i++;
+        }
+    }
+    printf("%.2f",ans);
+}

@@ -1,0 +1,88 @@
+#include<bits/stdc++.h>
+using namespace std;
+string int2str(int n)
+{
+    if(n==0)return "0";
+    int t=n;
+    string ans="";
+    if(n<0)n=-n;
+    while(n)
+    {
+        ans=(char)(n%10+'0')+ans;
+        n/=10;
+    }
+    if(t<0)ans="-"+ans;
+//    cout<<ans<<endl;
+    return ans;
+}
+string func(string s,int n)
+{
+    string ans="0.";
+    int i=0,p=0;
+    if(s[0]=='0'&&s[1]=='.')
+    {
+        i=2;
+        while(i<s.size()&&s[i]=='0'){i++;p--;}
+        if(i==s.size())//s=0
+        {
+            ans+=string(n,'0');
+            ans+="*10^0";
+            return ans;
+        }
+    }
+    else
+    {
+        while(i<s.size()&&s[i]=='0')i++;
+        if(s[i]=='.')
+        {
+            i++;
+            while(i<s.size()&&s[i]=='0'){i++;p--;}
+            if(i==s.size())//s=0
+            {
+                ans+=string(n,'0');
+                ans+="*10^0";
+                return ans;
+            }
+        }
+        else
+        {
+            if(i==s.size())//s=0
+            {
+                ans+=string(n,'0');
+                ans+="*10^0";
+                return ans;
+            }
+            while(i<s.size()&&s[i]!='.'){i++;p++;}
+        }
+    }
+//    cout<<p<<endl;
+    if(i>=s.size()||s[i]=='.')i=0;
+    while(i<s.size()&&(s[i]=='0'||s[i]=='.'))i++;
+    while(i<s.size())
+    {
+        if(s[i]=='.')i++;
+        ans+=s[i++];
+    }
+    if(ans.size()<=n+2)
+    {
+        ans+=string(n+2-ans.size(),'0');
+//    cout<<"////";
+    }
+    else
+        ans=ans.substr(0,n+2);
+    ans+="*10^";
+    ans+=int2str(p);
+    return ans;
+}
+
+int main()
+{
+    int n;string n1,n2;
+    while(cin>>n>>n1>>n2){
+    string t1=func(n1,n),t2=func(n2,n);
+//    cout<<t1<<endl<<t2<<endl;
+    if(t1==t2)
+        cout<<"YES "<<t1<<endl;
+    else
+        cout<<"NO "<<t1<<' '<<t2<<endl;}
+}

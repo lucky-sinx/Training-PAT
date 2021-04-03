@@ -1,0 +1,64 @@
+#include<vector>
+#include<map>
+#include<iostream>
+#include<string>
+#include<algorithm>
+#include<unordered_map>
+using namespace std;
+unordered_map<string,int> m;
+const int N=26*26*26*10+2;
+struct stu
+{
+    string name;
+    vector<int> course;
+};
+stu students[N];
+int main()
+{
+    int n,k;cin>>n>>k;
+    int stu_no=0;
+    for(int i=0;i<k;i++)
+    {
+        int course_no,stu_cnt;cin>>course_no>>stu_cnt;
+        for(int j=0;j<stu_cnt;j++)
+        {
+            string name;cin>>name;
+            if(m.find(name)==m.end())
+            {
+                m[name]=stu_no;
+//                cout<<m[name]<<stu_no<<endl;
+                students[stu_no].name=name;
+                students[stu_no].course.push_back(course_no);
+                stu_no++;
+            }
+            else
+            {
+                int index=m[name];
+                students[index].course.push_back(course_no);
+            }
+        }
+    }
+    for(int i=0;i<stu_no;i++)sort(students[i].course.begin(),students[i].course.end());
+//    for(int i=0;i<n;i++)
+//    {
+//        cout<<students[i].name<<' '<<students[i].course.size();
+//        for(int j=0;j<students[i].course.size();j++)
+//            cout<<' '<<students[i].course[j];
+//        cout<<endl;
+//    }
+    while(n--)
+    {
+        string name;cin>>name;
+        if(m.find(name)!=m.end())
+        {
+            cout<<students[m[name]].name<<' '<<students[m[name]].course.size();
+            for(int j=0;j<students[m[name]].course.size();j++)
+                cout<<' '<<students[m[name]].course[j];
+            cout<<endl;
+        }
+        else
+        {
+            cout<<name<<' '<<0<<endl;
+        }
+    }
+}

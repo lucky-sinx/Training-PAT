@@ -1,0 +1,32 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+int gcd(int a,int b)
+{
+    if(b==0)return a;
+    else return gcd(b,a%b);
+}
+int main()
+{
+    int n;
+    while(cin>>n)
+    {
+        if(n==0)break;
+        vector<int> s;
+        for(int i=0;i<n;i++)
+        {
+            int x;
+            cin>>x;
+            s.push_back(x);
+        }
+        int num=0;
+        for(int i=0;i<s.size();i++)
+            for(int j=i+1;j<s.size();j++)
+            {
+                int Min=min(s[i],s[j]),Max=max(s[i],s[j]);
+                if(gcd(Min,Max)==1)
+                    num++;
+            }
+        cout<<num<<endl;
+    }
+}

@@ -1,0 +1,56 @@
+#include<string>
+#include<vector>
+#include<iostream>
+#include<cstdio>
+using namespace std;
+const int N=105;
+int n;
+bool isnum(string s,double &x)
+{
+    int dot=0,n1=0,n2=0;
+    int i=0;
+    if(s[i]=='-')i++;
+    for(;i<s.size();i++)
+    {
+        if(s[i]=='.')
+        {
+            dot++;
+            if(dot>1)return false;
+        }
+        else if(isdigit(s[i]))
+        {
+            if(dot==1)n2++;
+            else n1++;
+        }
+        else
+            return false;
+    }
+    if(n2>2)return false;
+    sscanf(s.c_str(),"%lf",&x);
+    if(x>=-1000&&x<=1000)return true;
+    return false;
+}
+int main()
+{
+    cin>>n;
+    string s;
+    double sum=0;
+    int cnt=0;
+    while(n--)
+    {
+        cin>>s;
+        double x=0;
+        if(isnum(s,x))
+            sum+=x,cnt+=1;
+        else
+            cout<<"ERROR: "<<s<<" is not a legal number"<<endl;
+    }
+    if(cnt==1){
+        printf("The average of 1 number is %.2f\n",sum);
+        return 0;
+    }
+    if(cnt)
+        printf("The average of %d numbers is %.2f",cnt,sum/cnt);
+    else
+        printf("The average of %d numbers is Undefined",cnt,sum/cnt);
+}

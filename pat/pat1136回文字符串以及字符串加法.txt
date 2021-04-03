@@ -1,0 +1,44 @@
+#include<bits/stdc++.h>
+using namespace std;
+bool ispalin(string s)
+{
+    int l=0,r=s.size()-1;
+    while(l<=r)
+    {
+        if(s[l]!=s[r])return false;
+        l++;r--;
+    }
+    return true;
+}
+string add(string s1,string s2)
+{
+    string s;
+    int carry=0;
+    for(int i=s1.size()-1;i>=0;i--)
+    {
+        int a=s1[i]-'0'+s2[i]-'0'+carry;
+        carry=a/10;
+        s=(char)(a%10+'0')+s;
+    }
+    if(carry)s='1'+s;
+    return s;
+}
+int main()
+{
+//    string s1="97152",s2="25179";
+//    cout<<add(s1,s2)<<endl;
+//    cout<<ispalin(string("2334332"));
+    string a,b,c;
+    cin>>c;
+    int cnt=0;
+    while(!ispalin(c)&&cnt<10)
+    {
+        cnt++;
+        a=b=c;
+        reverse(b.begin(),b.end());
+        c=add(a,b);
+        cout<<a<<" + "<<b<<" = "<<c<<endl;
+    }
+    if(ispalin(c))cout<<c<<" is a palindromic number.";
+    else cout<<"Not found in 10 iterations.";
+}

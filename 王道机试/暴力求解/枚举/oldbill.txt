@@ -1,0 +1,22 @@
+#include<cstdio>
+#include<iostream>
+#include<string>
+using namespace std;
+
+int main()
+{
+    int x,y,z,n;
+    cin>>n>>x>>y>>z;
+    int a1,a5,res;
+    for(a1=9;a1>0;a1--)
+        for(a5=9;a5>=0;a5--)
+        {
+            res=a1*10000+x*1000+y*100+z*10+a5;
+            if(res/n*n==res)
+            {
+                cout<<a1<<' '<<a5<<' '<<res/n<<endl;
+                return 0;
+            }
+        }
+    cout<<0;
+}

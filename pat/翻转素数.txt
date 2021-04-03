@@ -1,0 +1,52 @@
+#include<iostream>
+#include<string>
+#include<cmath>
+using namespace std;
+const int MAXN=1000;
+int s[MAXN];
+int t;
+int char2int(char c)
+{
+    if(c>='0'&&c<='9')return c-'0';
+    else return c-'a'+10;
+}
+int getnum(int radix)
+{
+    int res=0;
+    for(int i=0;i<t;i++)
+        res=res*radix+s[i];
+    return res;
+}
+bool isprime(int n)
+{
+    if(n<=1)return false;
+    for(int i=2;i*i<=n;i++)
+        if(n%i==0)return false;
+    return true;
+}
+void gets(int n,int radix)
+{
+    t=0;
+    while(n)
+    {
+        s[t++]=n%radix;
+        n/=radix;
+    }
+}
+int main()
+{
+    int n,d;
+    //输入处理
+    while(cin>>n)
+    {
+        if(n<0)break;        
+        if(n==1){cout<<"No"<<endl;continue;}
+        cin>>d;
+        gets(n,d);
+        int num_reverse=getnum(d);
+        if(isprime(num_reverse)&&isprime(n))
+            cout<<"Yes"<<endl;
+        else
+            cout<<"No"<<endl;
+    }
+}

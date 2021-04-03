@@ -1,0 +1,64 @@
+#include<iostream>
+#include<cstdio>
+#include<string>
+#include<algorithm>
+#include<sstream>
+#include<vector>
+#include<queue>
+#include<bits/stdc++.h>
+using namespace std;
+const int MAXN=100000;
+bool visited[MAXN];
+
+bool Judge(string s)
+{
+    if (s.find("2012",0)==string::npos)return false;
+    else return true;
+}
+string Swap(string s,int i)
+{
+    string news=s;
+    char t=s[i];
+    news[i]=news[i+1];
+    news[i+1]=t;
+    return news;
+}
+void bfs(string s)
+{
+    queue<string > q;
+    map<string ,int> m;
+    m.clear();
+    q.push(s);
+    m[s]=0;
+    while(!q.empty())
+    {
+        string now=q.front();
+        q.pop();
+        if(Judge(now)==true)
+        {
+            cout<<m[now]<<endl;
+            return;
+        }
+        for(int i=0;i<s.size()-1;i++)
+        {
+            string news=Swap(now,i);
+            if(m.find(news)==m.end())
+            {
+                m[news]=m[now]+1;
+                q.push(news);
+            }
+        }
+    }
+    cout<<-1<<endl;
+}
+int main()
+{
+    int n;
+    string s;
+    while(cin>>n)
+    {
+        cin>>s;
+        if(Judge(s)==true)cout<<0<<endl;
+        else bfs(s);
+    }
+}

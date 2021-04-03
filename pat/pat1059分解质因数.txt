@@ -1,0 +1,39 @@
+#include<bits/stdc++.h>
+using namespace std;
+bool isprime(int x)
+{
+    if(x<2)return false;
+    for(int i=2;i*i<=x;i++)
+        if(x%i==0)return false;
+    return true;
+}
+int main()
+{
+    int num;cin>>num;cout<<num<<"=";
+    bool flag=true;
+    if(num==1)cout<<1<<endl;
+    else if(isprime(num))cout<<num<<endl;
+    else
+    {
+        int factor=2;
+        while(num>=factor)
+        {
+            int cnt=0;
+            while(num%factor==0){num/=factor;cnt++;}
+            if(cnt)
+            {
+                if(!flag)cout<<"*";
+                if(cnt==1)cout<<factor;
+                else cout<<factor<<'^'<<cnt;
+                flag=false;
+                if(isprime(num))
+                {
+                    cout<<'*'<<num<<endl;
+                    break;
+                }
+            }
+            else
+            do{factor++;}while(!isprime(factor));
+        }
+    }
+}

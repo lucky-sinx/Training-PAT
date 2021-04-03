@@ -1,0 +1,30 @@
+#include<iostream>
+#include<string>
+#include<queue>
+using namespace std;
+
+int main()
+{
+    int n;
+    while(cin>>n)
+    {
+        priority_queue<int ,vector<int>,greater<int> >my_priorityqueue;
+        while(n--)
+        {
+            int x;
+            cin>>x;
+            my_priorityqueue.push(x);
+        }
+        int res=0;
+        while(my_priorityqueue.size()>1)
+        {
+            int a=my_priorityqueue.top();
+            my_priorityqueue.pop();
+            int b=my_priorityqueue.top();
+            my_priorityqueue.pop();
+            res+=a+b;
+            my_priorityqueue.push(a+b);
+        }
+        cout<<res<<endl;
+    }
+}

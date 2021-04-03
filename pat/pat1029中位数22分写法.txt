@@ -1,0 +1,46 @@
+#include<iostream>
+using namespace std;
+const int MAXN=200001;
+int a[MAXN];
+int b[MAXN];
+int c[MAXN*2];
+int main()
+{
+    int acnt,bcnt,ccnt;;
+    cin>>acnt;
+    for(int i=1;i<=acnt;i++)cin>>a[i];
+    cin>>bcnt;
+    for(int i=1;i<=bcnt;i++)cin>>b[i];
+    ccnt=acnt+bcnt;
+    int la,lb,lc;la=lb=lc=1;
+    while(la<=acnt&&lb<=bcnt)
+    {
+        if(a[la]<=b[lb])
+        {
+            c[lc]=a[la];
+            lc++;
+            la++;
+        }
+        else
+        {
+            c[lc]=b[lb];
+            lc++;
+            lb++;
+        }
+    }
+    while(la<=acnt)
+    {
+        c[lc]=a[la];
+        lc++;
+        la++;
+    }
+    while(lb<=bcnt)
+    {
+        c[lc]=b[lb];
+        lc++;
+        lb++;
+    }
+//    for(int i=0;i<ccnt;i++)cout<<c[i]<<endl;
+    cout<<c[(ccnt+1)/2]<<endl;
+}
+

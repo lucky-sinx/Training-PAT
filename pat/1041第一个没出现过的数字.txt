@@ -1,0 +1,22 @@
+#include<map>
+#include<iostream>
+#include<vector>
+using namespace std;
+map<int,int> mape;
+int main()
+{
+    int n;
+    cin>>n;
+    vector<int> res;
+    for(int i=0;i<n;i++)
+    {
+        int x;
+        cin>>x;
+        mape[x]++;
+        res.push_back(x);
+    }
+    int i=0;
+    for(;i<n;i++)if(mape[res[i]]==1)break;
+    if(i<n)cout<<res[i]<<endl;
+    else cout<<"None"<<endl;
+}

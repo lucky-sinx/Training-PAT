@@ -1,0 +1,36 @@
+#include<bits/stdc++.h>
+#include<set>
+using namespace std;
+int book[50001];
+struct node
+{
+    int value,cnt;
+    bool operator <(const node &a) const{
+        return (cnt!=a.cnt)?cnt>a.cnt:value<a.value;
+    }
+};
+int main()
+{
+    int n,k,num;
+    cin>>n>>k;
+    set<node> s;
+    for(int i=0;i<n;i++)
+    {
+        cin>>num;
+        if(i!=0)
+        {
+            cout<<num<<':';
+            int temp_cnt=0;
+            for(auto it=s.begin();temp_cnt<k&&it!=s.end();it++)
+            {
+                cout<<' '<<it->value;
+                temp_cnt++;
+            }
+            cout<<endl;
+        }
+        auto it=s.find(node{num,book[num]});
+        if(it!=s.end())s.erase(it);
+        book[num]++;
+        s.insert(node{num,book[num]});
+    }
+}

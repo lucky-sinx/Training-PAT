@@ -1,0 +1,39 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=1e5+5;
+int a[N];
+int s[1010][1010];
+int main()
+{
+    int m,n,k;
+    cin>>k;
+    for(int i=0;i<k;i++)cin>>a[i];
+    sort(a,a+k);
+    for(n=sqrt((double)k);n>=1;n--)
+        if(k%n==0)break;
+    m=k/n;
+    int left=0,right=n-1,top=0,bot=m-1;
+    int index=k-1;
+    while(true)
+    {
+        for(int i=left;i<=right;i++)s[top][i]=a[index--];
+        ++top;
+        if(top>bot)break;
+        for(int i=top;i<=bot;i++)s[i][right]=a[index--];
+        --right;
+        if(left>right)break;
+        for(int i=right;i>=left;i--)s[bot][i]=a[index--];
+        --bot;
+        if(bot<top)break;
+        for(int i=bot;i>=top;i--)s[i][left]=a[index--];
+        ++left;
+        if(left>right)break;
+    }
+    for(int i=0;i<m;i++)
+    {
+        cout<<s[i][0];
+        for(int j=1;j<n;j++)
+            cout<<' '<<s[i][j];
+        cout<<endl;
+    }
+}

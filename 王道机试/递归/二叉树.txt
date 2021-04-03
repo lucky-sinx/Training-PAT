@@ -1,0 +1,16 @@
+#include<iostream>
+#include<cstdio>
+#include<string>
+#include<algorithm>
+using namespace std;
+int func(int m,int n)
+{
+    if(m>n)return 0;
+    else return func(2*m,n)+func(2*m+1,n)+1;
+}
+int main()
+{
+    int m,n;
+    while(cin>>m>>n)
+        cout<<func(m,n)<<endl;
+}

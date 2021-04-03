@@ -1,0 +1,116 @@
+#include<bits/stdc++.h>
+#include<map>
+using namespace std;
+int inf=99999999;
+const int N=201;
+int graph[N][N];
+map<string,int> mape;
+map<int,string> mape1;
+int happiness[N];
+
+vector<int> path[N];
+int dis[N];
+bool vis[N];
+struct node
+{
+    int no;
+    int cost;
+    node(int n,int c):no(n),cost(c){}
+};
+vector<int> temppath,bestpath;
+int maxhap=0;
+double maxave=0;
+int path_cnt=0;
+void dfs(int v)
+{
+    temppath.push_back(v);
+    if(v==0)
+    {
+        int value=0;
+        for(int i=0;i<temppath.size();i++)
+            value+=happiness[temppath[i]];
+        double ave=1.0*value/(temppath.size()-1);
+        if(value>maxhap)
+        {
+            maxhap=value;
+            maxave=ave;
+            bestpath=temppath;
+        }
+        else if(value==maxhap&&ave>maxave)
+        {
+            bestpath=temppath;
+            maxave=ave;
+        }
+        temppath.pop_back();
+        path_cnt++;
+        return;
+    }
+    for(int i=0;i<path[v].size();i++)
+        dfs(path[v][i]);
+    temppath.pop_back();
+}
+int main()
+{
+    int n,k;string start_s;
+    scanf("%d %d",&n,&k);
+    cin>>start_s;
+    fill(graph[0],graph[0]+N*N,inf);
+    fill(dis,dis+N,inf);
+    memset(happiness,0,sizeof(happiness));
+    memset(vis,0,sizeof(0));
+    mape[start_s]=0;happiness[0]=0;mape1[0]=start_s;
+    for(int i=0;i<n;i++)graph[i][i]=0;
+    for(int i=1;i<n;i++)
+    {
+        string city;int hap;
+        cin>>city>>hap;
+        mape[city]=i;
+        mape1[i]=city;
+        happiness[i]=hap;
+    }
+    for(int i=0;i<k;i++)
+    {
+        int cos;string a,b;
+        cin>>a>>b>>cos;
+        int from=mape[a],to=mape[b];
+        graph[from][to]=graph[to][from]=cos;
+    }
+    dis[0]=0;
+    for(int i=0;i<n;i++)//不管那么多先找出所有cost最小的路再说
+    {
+        int u=-1,minn=inf;
+        for(int j=0;j<n;j++)
+            if(vis[j]==false&&dis[j]<minn){minn=dis[j],u=j;}
+        if(u==-1)break;
+        vis[u]=true;
+        for(int j=0;j<n;j++)
+        {
+            if(vis[j]==false&&graph[u][j]!=inf)
+            {
+                if(dis[j]>dis[u]+graph[u][j])
+                {
+                    dis[j]=dis[u]+graph[u][j];
+                    path[j].clear();
+                    path[j].push_back(u);
+                }
+                else if(dis[j]==dis[u]+graph[u][j])
+                {
+                    path[j].push_back(u);
+                }
+            }
+        }
+    }
+    int rom=mape["ROM"];
+    dfs(rom);
+    cout<<path_cnt<<' '<<dis[rom]<<' '<<maxhap<<' '<<(int)maxave<<endl;
+    for(int i=bestpath.size()-1;i>=1;i--)
+        cout<<mape1[bestpath[i]]<<"->";
+    cout<<"ROM";
+}
+
+
+
+
+
+
+

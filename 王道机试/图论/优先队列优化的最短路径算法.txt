@@ -1,0 +1,78 @@
+#include<iostream>
+#include<cstdio>
+#include<vector>
+#include<queue>
+#include<cstring>
+using namespace std;
+const int MAXN=200;
+const int INF=INT_MAX;
+int dis[MAXN];
+
+struct edge
+{
+    int to;
+    int length;
+    edge(int t,int l):to(t),length(l){}
+};
+vector<edge> graph[MAXN];
+
+struct Point
+{
+    int no;
+    int dis;
+    Point(int n,int d):no(n),dis(d){}
+    bool operator< (const Point &p) const
+    {
+        return dis>p.dis;
+    }
+};
+void dijkstra(int s)
+{
+    priority_queue<Point> mypriorityqueue;
+    dis[s]=0;
+    mypriorityqueue.push(Point(s,dis[s]));
+    while(!mypriorityqueue.empty())
+    {
+        int nearest_no=mypriorityqueue.top().no;
+        mypriorityqueue.pop();
+        for(int i=0;i<graph[nearest_no].size();i++)
+        {
+            int v=graph[nearest_no][i].to;
+            int d=graph[nearest_no][i].length;
+            if(dis[v]>dis[nearest_no]+d)
+            {
+                dis[v]=dis[nearest_no]+d;
+                mypriorityqueue.push(Point(v,dis[v]));
+            }
+        }
+    }
+    return;
+}
+int main()
+{
+    int n,m;
+    while(cin>>n>>m)
+    {
+        memset(graph,0,sizeof(graph));
+        fill(dis,dis+n,INF);
+        while(m--)
+        {
+            int from,to,length;
+            cin>>from>>to>>length;
+            graph[from].push_back(edge(to,length));
+            graph[to].push_back(edge(from,length));
+        }
+        int s,t;
+        cin>>s>>t;
+        dijkstra(s);
+        if(dis[t]==INF)dis[t]=-1;
+        cout<<dis[t]<<endl;
+    }
+}
+
+
+
+
+
+
+

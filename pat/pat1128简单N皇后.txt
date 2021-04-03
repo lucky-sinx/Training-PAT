@@ -1,0 +1,23 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=1005;
+int n,t;
+int f[3][2*N];
+int main()
+{
+    cin>>t;
+    while(t--)
+    {
+        memset(f,0,sizeof(f));
+        cin>>n;
+        bool flag=true;
+        for(int i=1;i<=n;i++)
+        {
+            int x;cin>>x;
+            if(f[0][x]||f[1][x-i+n]||f[2][x+i])flag=0;
+            f[0][x]=f[1][x-i+n]=f[2][x+i]=1;
+        }
+        if(flag)cout<<"YES"<<endl;
+        else cout<<"NO"<<endl;
+    }
+}

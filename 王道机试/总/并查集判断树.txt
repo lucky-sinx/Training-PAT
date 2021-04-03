@@ -1,0 +1,76 @@
+#include<iostream>
+#include<map>
+#include<vector>
+#include<string.h>
+#include<cstdio>
+using namespace std;
+const int MAXN=1000;
+/////////////并查集////////////
+//两个数组
+int father[MAXN];
+int height[MAXN];
+int inDegree[MAXN];
+int visit[MAXN];
+ 
+//两个函数（查、并）
+void Init(int n=MAXN)
+{
+    for(int i=0;i<n;i++)
+        father[i]=i,height[i]=0,inDegree[i]=0,visit[i]=false;
+}
+int Find(int x)//查找属于哪一类
+{
+    if(x==father[x])return x;
+    else return Find(father[x]);
+}
+void Union(int x,int y)//合并两个类
+{
+    //先找出x、y的类别
+    x=Find(x),y=Find(y);
+    if(x!=y)//不是同一几何
+    {
+        if(height[x]<height[y])father[x]=y;
+        else if(height[y]<height[x])father[y]=x;
+        else //height[x]==height[y]
+            father[y]=x,height[x]++;
+    }
+}
+//////判断是否是树///////
+bool isTree()
+{
+    bool flag=true;
+    int component=0;
+    int root=0;
+    for(int i=0;i<MAXN;i++)
+    {
+        if(!visit[i])continue;
+        if(father[i]==i)component++;
+        if(inDegree[i]==0)root++;
+        else if(inDegree[i]>1)flag=false;
+    }
+    if(component!=1||root!=1)flag=false;
+    if(component==0&&root==0)flag =true;
+    return flag;
+}
+int main()
+{
+    int x,y;
+    int casenum=0;
+    Init();
+    while(cin>>x>>y)
+    {
+        if(x==-1&&y==-1)break;
+        if(x==0&&y==0)
+        {
+            if(isTree())printf("Case %d is a tree.\n",++casenum);
+            else printf("Case %d is not a tree.\n",++casenum);
+            Init();
+        }
+        else
+        {
+            Union(x,y);
+            inDegree[y]++;
+            visit[x]=visit[y]=true;
+        }
+    }
+}

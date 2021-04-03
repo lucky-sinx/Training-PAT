@@ -1,0 +1,37 @@
+#include<iostream>
+using namespace std;
+const int MAXN=30;
+int s[MAXN];
+int t=0;
+void gets(int n,int d)
+{
+    t=0;
+    while(n)
+    {
+        s[t++]=n%d;
+        n/=d;
+    }
+}
+bool isok()
+{
+    if(t==1)return true;
+    for(int l=0,r=t-1;l<=r;l++,r--)
+    {
+        if(s[l]!=s[r])return false;
+    }
+    return true;
+}
+int main()
+{
+    int n,b;
+    cin>>n>>b;
+    gets(n,b);
+    if(isok())cout<<"Yes"<<endl;
+    else cout<<"No"<<endl;
+    for(int i=t-1;i>=0;i--)
+    {
+        if(i!=t-1)cout<<" ";
+        cout<<s[i];
+    }
+    cout<<endl;
+}

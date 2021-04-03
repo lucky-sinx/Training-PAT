@@ -1,0 +1,58 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=100005;
+struct node{
+    int x,y,z;
+    node(int a,int b,int c):x(a),y(b),z(c){}
+};
+int g[1300][130][70];
+bool vis[1300][130][70];
+int dx[6]={1,-1,0,0,0,0};
+int dy[6]={0,0,1,-1,0,0};
+int dz[6]={0,0,0,0,1,-1};
+int n,m,k,t;
+bool judge(int x,int y,int z)
+{
+    if(x<0||x>=n||y<0||y>=m||z<0||z>=k)return false;
+    if(vis[x][y][z]==true||g[x][y][z]==0)return false;
+    return true;
+}
+int bfs(int x,int y,int z)
+{
+    int cnt=0;
+    queue<node> q;
+    q.push(node(x,y,z));
+    vis[x][y][z]=true;
+    while(!q.empty())
+    {
+        node t=q.front();
+        int tx=t.x,ty=t.y,tz=t.z;
+        q.pop();
+        cnt++;
+        for(int i=0;i<6;i++)
+        {
+            int nx=tx+dx[i],ny=ty+dy[i],nz=tz+dz[i];
+            if(judge(nx,ny,nz))
+                {q.push(node(nx,ny,nz));vis[nx][ny][nz]=true;}
+        }
+    }
+    if(cnt>=t)return cnt;
+    else return 0;
+}
+int main()
+{
+    int ans=0;
+    memset(vis,0,sizeof(vis));
+    cin>>n>>m>>k>>t;
+    for(int i=0;i<k;i++)
+        for(int j=0;j<n;j++)
+            for(int l=0;l<m;l++)
+                cin>>g[j][l][i];
+    for(int i=0;i<k;i++)
+        for(int j=0;j<n;j++)
+            for(int l=0;l<m;l++){
+                if(g[j][l][i]==1&&vis[j][k][l]==false)
+                   ans+=bfs(j,l,i);
+            }
+    cout<<ans<<endl;
+}

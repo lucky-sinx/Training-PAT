@@ -1,0 +1,83 @@
+#include<iostream>
+#include<queue>
+#include<vector>
+#include<climits>
+#include<cstring>
+using namespace std;
+struct edge
+{
+    int from;
+    int to;
+    int len;
+    int cost;
+    edge(int f,int t,int l,int c):from(f),to(t),len(l),cost(c){}
+};
+const int N=505;
+vector<edge> graph[N];
+int len[N];
+int cost[N];
+int pre[N];
+struct Point
+{
+    int no;
+    int len;
+    Point(int n,int l):no(n),len(l){}
+    bool operator< (const Point &p)const {return len>p.len;}
+};
+void dijkstra(int x)
+{
+    priority_queue<Point> q;
+    len[x]=0;
+    cost[x]=0;
+    pre[x]=-1;
+    q.push(Point(x,len[x]));
+    while(!q.empty())
+    {
+        int near=q.top().no;
+        q.pop();
+        for(int i=0;i<graph[near].size();i++)
+        {
+            int v=graph[near][i].to;
+            int d=graph[near][i].len;
+            int c=graph[near][i].cost;
+            if(len[v]>d+len[near]||(cost[v]>cost[near]+c&&len[v]==d+len[near]))
+            {
+                len[v]=d+len[near];
+                cost[v]=cost[near]+c;
+                q.push(Point(v,len[v]));
+                pre[v]=near;
+            }
+        }
+    }
+}
+int main()
+{
+    int n,m,s,t;
+    cin>>n>>m>>s>>t;
+    memset(graph,0,sizeof(graph));
+    fill(cost,cost+n+1,0x3f3f3f3f);
+    fill(len,len+n+1,0x3f3f3f3f);
+    for(int i=0;i<m;i++)
+    {
+        int f,t,l,c;
+        cin>>f>>t>>l>>c;
+        graph[f].push_back(edge(f,t,l,c));
+        graph[t].push_back(edge(t,f,l,c));
+    }
+    dijkstra(s);
+    vector<int>path;
+    path.push_back(t);
+    int a=pre[t];
+    while(a!=-1)
+    {
+        path.push_back(a);
+        a=pre[a];
+    }
+    for(int i=path.size()-1;i>=0;i--)
+    {
+        if(i<path.size()-1)cout<<' ';
+        cout<<path[i];
+    }
+    cout<<' '<<len[t]<<' '<<cost[t]<<endl;
+}
+

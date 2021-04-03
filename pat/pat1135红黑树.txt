@@ -1,0 +1,68 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct node
+{
+    int data;
+    bool isred;
+    node *left,*right;
+};
+void Insert(node *&t,int x)
+{
+    if(!t)
+    {
+        t=new node();
+        t->data=x;
+        t->left=t->right=0;
+        t->isred=x<0?1:0;
+        return;
+    }
+    if(abs(x)<abs(t->data))
+    {
+        Insert(t->left,x);
+        return;
+    }
+    if(abs(x)>=abs(t->data))
+        Insert(t->right,x);
+
+}
+bool judgecolor(node *t)
+{
+    if(t==0)return true;
+    if(t->isred&&((t->left&&t->left->isred)||
+                  (t->right&&t->right->isred)))return false;
+    return judgecolor(t->left)&&judgecolor(t->right);
+}
+int getblack(node *t)
+{
+    if(t==0)return 0;
+    int l=getblack(t->left),r=getblack(t->right);
+    return t->isred?max(l,r):max(l,r)+1;
+}
+bool judgepath(node *t)
+{
+    if(t==0)return true;
+    int l=getblack(t->left),r=getblack(t->right);
+    if(l!=r)return false;
+    return judgepath(t->left)&&judgepath(t->right);
+}
+bool judge(node *t)
+{
+    return !t->isred&&judgecolor(t)&&judgepath(t);
+}
+int main()
+{
+    int n,m;
+    cin>>m;
+    while(m--)
+    {
+        int n;cin>>n;
+        node *t=0;
+        for(int i=0;i<n;i++)
+        {
+            int x;cin>>x;
+            Insert(t,x);
+        }
+        if(judge(t))cout<<"Yes"<<endl;
+        else cout<<"No"<<endl;
+    }
+}

@@ -1,0 +1,39 @@
+#include<string>
+#include<cstdio>
+#include<iostream>
+#include<queue>
+#include<vector>
+using namespace std;
+char int2char(int x)
+{
+    if(x<=9)return x+'0';
+    else return x-10+'a';
+}
+int char2int(char x)
+{
+    if(x<='9')return x-'0';
+    else return x-'A'+10;
+}
+int main()
+{
+//    cout<<Multiply("123",2);
+    string s;
+    int m,n;
+    cin>>m>>n;
+    cin>>s;
+    long long x=0;
+    for(int i=0;i<s.size();i++)
+    {
+        x*=m;
+        x+=char2int(s[i]);
+    }
+    vector<char> res;
+    while(x!=0)
+    {
+        res.push_back(int2char(x%n));
+        x/=n;
+    }
+    for(int i=res.size()-1;i>=0;i--)
+        cout<<res[i];
+    cout<<endl;
+}

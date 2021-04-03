@@ -1,0 +1,41 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=1005;
+int indegree[N];
+int t[N];
+int n,m;
+vector<int> g[N];
+int main()
+{
+    cin>>n>>m;
+    memset(indegree,0,sizeof(indegree));
+    for(int i=0;i<m;i++)
+    {
+        int from,to;cin>>from>>to;
+        g[from].push_back(to);
+        indegree[to]++;
+    }
+//    for(int i=1;i<=n;i++)cout<<indegree[i]<<' ';cout<<endl;
+    int k;cin>>k;
+    vector<int> ans;
+    for(int d=0;d<k;d++)
+    {
+        for(int i=1;i<=n;i++)
+            t[i]=indegree[i];
+        bool flag=true;
+        for(int i=0;i<n;i++)
+        {
+            int now;cin>>now;
+            if(t[now]!=0)flag=false;
+            for(int j=0;j<g[now].size();j++)
+                t[g[now][j]]--;
+        }
+        if(!flag)
+            ans.push_back(d);
+    }
+    for(int i=0;i<ans.size();i++)
+    {
+        if(i!=0)cout<<' ';
+        cout<<ans[i];
+    }
+}

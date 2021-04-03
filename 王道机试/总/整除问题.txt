@@ -1,0 +1,94 @@
+#include<string>
+#include<cstdio>
+#include<iostream>
+#include<queue>
+#include<vector>
+#include<stack>
+#include<cmath>
+using namespace std;
+typedef long long ll;
+
+const int MAXN=10000;
+
+bool isprime[MAXN];
+vector<int> prime;
+vector<int> n_cnt,a_cnt;
+
+void init()
+{
+    for(int i=0;i<MAXN;i++)
+        isprime[i]=true;
+    isprime[0]=isprime[1]=false;
+    for(int i=2;i<MAXN;i++)
+    {
+        if(isprime[i])
+        {
+            prime.push_back(i);
+            n_cnt.push_back(0);
+            a_cnt.push_back(0);
+            for(int j=i*i;j<MAXN;j+=i)
+                isprime[j]=false;
+        }
+    }
+    return;
+}
+int main()
+{
+    init();//ËØÊýÉ¸
+    int n,a;
+//    for(int i=0;i<10;i++)
+//        cout<<prime[i]<<endl;
+    cin>>n>>a;
+    int num=0;
+    for(int j=2;j<=n;j++)//求n阶乘的质因数分解
+    {
+        int t=j;
+        for(int i=0;i<(int)prime.size()&&prime[i]<t;i++)
+        {
+            int factor=prime[i];
+            while(t%factor==0)
+            {
+                n_cnt[i]++;
+                t/=factor;
+            }
+        }
+        if(t>1)
+        {
+            for(int i=0;i<(int)prime.size();i++)
+                if(prime[i]==t){
+                    n_cnt[i]+=1;
+                    break;
+                }
+        }
+    }
+//        for(int i=0;i<n_cnt.size();i++)cout<<n_cnt[i]<<endl;
+    for(int i=0;i<(int)prime.size()&&prime[i]<a;i++)//对a进行质因数分解
+    {
+        int factor=prime[i];
+        while(a%factor==0)
+        {
+            a_cnt[i]++;
+            a/=factor;
+        }
+    }
+    if(a>1)
+    {
+        for(int i=0;i<(int)prime.size();i++)
+            if(prime[i]==a){
+                a_cnt[i]+=1;
+                break;
+            }
+    }
+//        for(int i=0;i<10;i++)cout<<a_cnt[i]<<endl;
+    int k=INT_MAX;
+    for(int i=0;i<(int)prime.size()&&prime[i]<=a;i++)
+    {
+//            cout<<a_cnt[i]<<i<<endl;
+        if(a_cnt[i]!=0)
+        {
+//                cout<<k<<a_cnt[i]<<n_cnt[i];
+            k=min(k,n_cnt[i]/a_cnt[i]);
+        }
+    }
+    cout<<k<<endl;
+}

@@ -1,0 +1,71 @@
+#include<iostream>
+#include<climits>
+using namespace std;
+const int N=1e5+10;
+int x[N];
+int sum[N];
+int min_sum=INT_MAX;
+int main()
+{
+    int n,m;
+    cin>>n>>m;
+    sum[0]=x[0];
+    for(int i=1;i<=n;i++)
+    {
+        cin>>x[i];
+        sum[i]=sum[i-1]+x[i];
+    }
+    bool flag=false;
+    for(int i=1;i<=n;i++)
+    {
+        if(x[i]==m){cout<<i<<'-'<<i<<endl;flag=true;continue;}
+        int left=i,right=n,mid,s_ij;
+        while(left<=right)
+        {
+            mid=(left+right)/2;
+            s_ij=sum[mid]-sum[i-1];
+            if(s_ij==m)
+            {
+                cout<<i<<'-'<<mid<<endl;
+                flag=true;
+                break;
+            }
+            else if(s_ij>m)
+                right=mid-1;
+            else
+                left=mid+1;
+        }
+        if(!flag)
+        {
+            if(s_ij>m)
+            {                
+                while(s_ij>m)s_ij-=x[mid--];
+                min_sum=min(min_sum,s_ij+x[mid+1]);
+            }
+        }
+    }
+    if(!flag)
+    {
+        m=min_sum;
+        for(int i=1;i<=n;i++)
+        {
+            if(x[i]==m){cout<<i<<'-'<<i<<endl;flag=true;continue;}
+            int left=i+1,right=n,s_ij;
+            while(left<=right)
+            {
+                int mid=(left+right)/2;
+                s_ij=sum[mid]-sum[i-1];
+                if(s_ij==m)
+                {
+                    cout<<i<<'-'<<mid<<endl;
+                    break;
+                }
+                else if(s_ij>m)
+                    right=mid-1;
+                else
+                    left=mid+1;
+            }
+        }
+    }
+}
+

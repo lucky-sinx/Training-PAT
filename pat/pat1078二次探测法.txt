@@ -1,0 +1,36 @@
+#include<bits/stdc++.h>
+using namespace std;
+bool isprime(int n)
+{
+    if(n<2)return false;
+    for(int i=2;i*i<=n;i++)
+        if(n%i==0)return false;
+    return true;
+}
+int msize,n;
+const int N=1e5+5;
+int a[N];
+bool f[N];
+int main()
+{
+    memset(f,0,sizeof(f));
+    cin>>msize>>n;
+    while(!isprime(msize))msize++;
+    for(int i=0;i<n;i++)
+    {
+        int x;cin>>x;
+        int j;bool flag=false;
+        for(j=0;j<msize;j++)//核心
+        {
+            if(f[(x%msize+j*j)%msize]==false)
+            {
+                f[(x%msize+j*j)%msize]=true;
+                flag=true;
+                break;
+            }            
+        }
+        if(i!=0)cout<<' ';
+        if(flag)cout<<(x%msize+j*j)%msize;
+        else cout<<'-';
+    }
+}

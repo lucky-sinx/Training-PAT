@@ -1,0 +1,46 @@
+#include<bits/stdc++.h>
+#include<cstdio>
+#include<iostream>
+#include<algorithm>
+#include<string>
+using namespace std;
+typedef struct node{
+    string name;
+    int point; 
+    int order;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+}student;
+bool upsort(student x,student y){
+    if(x.point==y.point)
+        return x.order<y.order;
+    else
+        return x.point<y.point;
+}
+bool Upsort(student x,student y){
+    if(x.point==y.point)
+        return x.order<y.order;
+    else
+        return x.point<y.point;
+}
+bool Downsort(student x,student y){
+    if(x.point==y.point)
+        return x.order<y.order;
+    else
+        return x.point>y.point;
+}
+int main()
+{
+    int n,type;
+    while(scanf("%d%d",&n,&type)!=EOF){
+        student s[n];
+        for(int i=0;i<n;i++){            
+            cin>>s[i].name>>s[i].point;
+            s[i].order=i;
+        }
+        if(type==0)
+            sort(s,s+n,Downsort);
+        else
+            sort(s,s+n,Upsort);
+        for(int i=0;i<n;i++)
+            cout<<s[i].name<<' '<<s[i].point<<endl;
+    }
+}

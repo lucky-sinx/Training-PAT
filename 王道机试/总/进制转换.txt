@@ -1,0 +1,36 @@
+#include<string>
+#include<cstdio>
+#include<iostream>
+#include<queue>
+#include<vector>
+using namespace std;
+string Divide(string s,int x)//字符串除整数
+{
+    int res=0;
+    for(int i=0;i<s.size();i++)
+    {
+        int c=res*10+s[i]-'0';
+        s[i]=c/x+'0';
+        res=c%x;
+    }
+    int pos=0;
+    while(s[pos]=='0')pos++;
+    return s.substr(pos);
+}
+int main()
+{
+    string s;
+    while(cin>>s)
+    {
+        vector<int> res;
+        while(s.size()!=0)
+        {
+            int last=s[s.size()-1]-'0';
+            res.push_back(last%2);
+            s=Divide(s,2);
+        }
+        for(int i=res.size()-1;i>=0;i--)
+            cout<<res[i];
+        cout<<endl;
+    }
+}

@@ -1,0 +1,35 @@
+#include<iostream>
+#include<string>
+#include<queue>
+#include<string.h>
+using namespace std;
+const int MAXN=10001;
+bool f[MAXN];
+int main()
+{
+    int n;
+    while(cin>>n)
+    {
+        memset(f,false,sizeof(f));
+        priority_queue<int ,vector<int>,greater<int> >my_priorityqueue;
+        while(n--)
+        {
+            int x;
+            cin>>x;
+            my_priorityqueue.push(x);
+        }
+        int k,res;
+        cin>>k;
+        while(k)
+        {
+            res=my_priorityqueue.top();
+            my_priorityqueue.pop();
+            if(f[res]!=true)
+            {
+                k--;
+                f[res]=true;
+            }
+        }
+        cout<<res<<endl;
+    }
+}

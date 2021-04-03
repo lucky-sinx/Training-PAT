@@ -1,0 +1,69 @@
+#include<iostream>
+#include<algorithm>
+#include<map>
+#include<string>
+#include<bits/stdc++.h>
+using namespace std;
+struct node
+{
+    int no;
+    int point[4];
+    int best_ranking;
+    int style;
+};
+int now;
+node data[3000];
+string s="ACME";
+bool cmp(node x,node y)
+{
+    return x.point[now]>y.point[now];
+}
+int main()
+{
+    int m,n;
+    cin>>n>>m;
+    for(int i=0;i<n;i++)
+    {
+        int no,c,e,m;
+        scanf("%d %d %d %d",&no,&c,&m,&e);
+        data[i].no=no;
+        data[i].point[1]=c;
+        data[i].point[2]=m;
+        data[i].point[3]=e;
+        data[i].point[0]=c+m+e;
+        data[i].best_ranking=INT_MAX;
+    }
+    for(now=0;now<4;now++)
+    {
+        sort(data,data+n,cmp);
+        int ranking[3000];
+        ranking[0]=1;
+        for(int i=1;i<n;i++)
+        {
+            if(data[i].point[now]==data[i-1].point[now])
+                ranking[i]=ranking[i-1];
+            else ranking[i]=i+1;
+        }
+        for(int i=0;i<n;i++)
+        {
+            if(ranking[i]<data[i].best_ranking)
+                data[i].best_ranking=ranking[i],data[i].style=now;
+        }
+    }
+    while(m--)
+    {
+        int no;
+        cin>>no;
+        int key=-1;
+        for(int i=0;i<n;i++)
+            if(no==data[i].no){
+                key=i;
+                break;
+            }
+        if(key==-1)
+            cout<<"N/A"<<endl;
+        else
+            cout<<data[key].best_ranking<<' '<<s[data[key].style]<<endl;
+
+    }
+}

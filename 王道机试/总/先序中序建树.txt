@@ -1,0 +1,55 @@
+#include<iostream>
+#include<cstdio>
+#include<string>
+#include<algorithm>
+#include<sstream>
+#include<vector>
+#include<queue>
+#include<bits/stdc++.h>
+#define NULL 0
+using namespace std;
+
+struct bitree{
+    char data;
+    bitree *left,*right;
+    bitree(char c):data(c),left(NULL),right(NULL){}
+};
+
+bitree *build(string s1,string s2)
+{
+    cout<<s1<<':'<<s2<<endl;
+    if(s1.size()==0)return NULL;
+    char c=s1[0];//根节点
+    int position=s2.find(c);
+    bitree *res=new bitree(c);
+    res->left=build(s1.substr(1,position),s2.substr(0,position));//注意substr第二个参数含义
+    res->right=build(s1.substr(position+1),s2.substr(position+1));
+
+}
+
+void postorder(bitree *t)
+{
+    if(t==NULL)return;
+    postorder(t->left);
+    postorder(t->right);
+    cout<<t->data<<' ';
+}
+void inorder(bitree *t)
+{
+    if(t==NULL)return;
+    inorder(t->left);
+    cout<<t->data<<' ';
+    inorder(t->right);
+}
+int main()
+{
+    string s1,s2;
+    while(cin>>s1)
+    {
+        cin>>s2;
+        bitree *res=build(s1,s2);
+        postorder(res);
+//        inorder(res);
+        cout<<endl;
+    }
+}

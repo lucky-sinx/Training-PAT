@@ -1,0 +1,76 @@
+#include<iostream>
+#include<cstdio>
+#include<string>
+#include<algorithm>
+#include<sstream>
+#include<vector>
+#include<queue>
+#include<bits/stdc++.h>
+using namespace std;
+const int MAXN=26;
+bool visited[MAXN];
+int stick[MAXN];
+int side;
+int m;//木棍个数
+bool compare(int x,int y)
+{
+    return x>y;
+}
+bool dfs(int sum,int cnt,int position)
+{
+    if(cnt==3)//////1a
+    {
+        return true;
+    }
+    int bad_sample=0;
+    for(int i=position;i<m;i++)
+    {
+        if(visited[i]||sum+stick[i]>side||stick[i]==bad_sample)
+            continue;
+        visited[i]=true;//////2a
+        if(sum+stick[i]==side)//构成了一条边
+        {
+            if(dfs(0,cnt+1,0))return true;
+            else bad_sample=stick[i];
+        }
+        else
+        {
+            if(dfs(sum+stick[i],cnt,i))return true;
+            else bad_sample=stick[i];
+        }
+        visited[i]=false;//////2b
+    }
+    return false;//////1b
+}
+int main()
+{
+    int n;
+    cin>>n;
+    while(n--)
+    {
+        cin>>m;
+        int len=0;
+        for(int i=0;i<m;i++)
+        {
+            cin>>stick[i];
+            len+=stick[i];
+        }
+        if(len%4!=0)
+        {
+            cout<<"no"<<endl;
+            continue;
+        }
+        side=len/4;
+        sort(stick,stick+m,compare);
+        if(stick[0]>side)
+        {
+            cout<<"no"<<endl;
+            continue;
+        }
+        memset(visited,false,sizeof(visited));
+        if(dfs(0,0,0))
+            cout<<"yes"<<endl;
+        else
+            cout<<"no"<<endl;
+    }
+}

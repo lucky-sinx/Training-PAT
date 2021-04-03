@@ -1,0 +1,36 @@
+#include<iostream>
+#include<cstdio>
+using namespace std;
+const int MAXN=100000;
+int linklist[MAXN];
+int main()
+{
+    int n1,n2,N;
+    cin>>n1>>n2>>N;
+    for(int i=0;i<N;i++)
+    {
+        char c;
+        int now,next;
+        cin>>now>>c>>next;
+        linklist[now]=next;
+    }
+    int t1=n1,t2=n2;
+    if(t1==-1||t2==-1){
+        cout<<-1<<endl;
+        return 0;
+    }
+    while(t1!=t2)
+    {
+        if(t1==-1)t1=n2;
+        if(t2==-1)t2=n1;
+//        cout<<t1<<' '<<t2<<endl;
+        t1=linklist[t1];
+        t2=linklist[t2];
+    }
+    if(t1==-1){
+        cout<<-1<<endl;
+        return 0;
+    }
+    else
+        printf("%05d\n",t1);
+}

@@ -1,0 +1,59 @@
+#include<iostream>
+#include<string>
+using namespace std;
+struct bitree
+{
+    int data;
+    bitree* left,*right;
+    bitree(int d):data(d),left(NULL),right(NULL){}
+};
+void Insert(bitree *&t,int x)
+{
+    if(t==NULL)
+        t=new bitree(x);
+    else if(x<t->data)
+        Insert(t->left,x);
+    else
+        Insert(t->right,x);
+}
+void build(bitree *&t,string s)
+{
+    for(int i=0;i<s.size();i++)
+        Insert(t,s[i]-'0');
+}
+bool compare(bitree *t1,bitree *t2)
+{
+    if(!t1&&t2)return false;
+    if(!t2&&t1)return false;
+    if(!t1&&!t2)return true;
+    if(t1->data!=t2->data)return false;
+    return compare(t1->left, t2->left)&&compare(t1->right,t2->right);
+}
+void preorder(bitree *t)
+{
+    if(!t)return;
+    cout<<t->data<<" ";
+    preorder(t->left);
+    preorder(t->right);
+}
+int main()
+{
+    int n;
+    while(cin>>n)
+    {
+        if(n==0)break;
+        bitree *t1=NULL;
+        string s;
+        cin>>s;
+        build(t1,s);
+        while(n--)
+        {
+            cin>>s;
+            bitree *t2=NULL;
+            build(t2,s);
+            if(compare(t1,t2))
+                cout<<"YES"<<endl;
+            else cout<<"NO"<<endl;
+        }
+    }
+}

@@ -1,0 +1,58 @@
+#include<iostream>
+#include<algorithm>
+#include<string>
+#include<vector>
+using namespace std;
+struct stu
+{
+    string name,id;
+    char gender;
+    int point;
+    stu(string n,string id,char g,int p):name(n),id(id),gender(g),point(p){}
+};
+bool cmp(stu x,stu y)
+{
+    return x.point>y.point;
+}
+vector<stu>female_student,male_student;
+int main()
+{
+    int n;
+    cin>>n;
+    for(int i=0;i<n;i++)
+    {
+        string name,id;char g;int p;
+        cin>>name>>g>>id>>p;
+        if(g=='M')
+            male_student.push_back(stu(name,id,g,p));
+        else if(g=='F')
+            female_student.push_back(stu(name,id,g,p));
+    }
+    int fcnt=female_student.size(),mcnt=male_student.size();
+    sort(female_student.begin(),female_student.begin()+fcnt,cmp);
+    sort(male_student.begin(),male_student.begin()+mcnt,cmp);
+//    if(fcnt==0&&mcnt==0)
+//    {
+//        cout<<"Absent"<<endl<<"Absent"<<endl<<"NA"<<endl;
+//    }
+    if(fcnt==0)
+    {
+        cout<<"Absent"<<endl;
+        cout<<male_student[mcnt-1].name<<' '<<male_student[mcnt-1].id<<endl;
+        cout<<"NA"<<endl;
+        return 0;
+    }
+    if(mcnt==0)
+    {
+        cout<<female_student[0].name<<' '<<female_student[0].id<<endl;        
+        cout<<"Absent"<<endl;
+        cout<<"NA"<<endl;
+        return 0;
+    }
+    if(fcnt&&mcnt)
+    {
+        cout<<female_student[0].name<<' '<<female_student[0].id<<endl;
+        cout<<male_student[mcnt-1].name<<' '<<male_student[mcnt-1].id<<endl;
+        cout<<female_student[0].point-male_student[mcnt-1].point<<endl;
+    }
+}

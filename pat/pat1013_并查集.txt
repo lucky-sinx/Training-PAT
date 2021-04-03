@@ -1,0 +1,65 @@
+#include<iostream>
+#include<vector>
+#include<map>
+#include<cstdio>
+using namespace std;
+const int MAXN=1005;
+int father[MAXN];
+int height[MAXN];
+bool isenemy[MAXN];
+struct road{
+    int x,y;
+    road(int a,int b):x(a),y(b){}
+    road():x(0),y(0){}
+};
+void init()
+{
+    for(int i=0;i<MAXN;i++)father[i]=i,height[i]=0;
+}
+int Find(int x)
+{
+    if(x==father[x])return x;
+    else return Find(father[x]);
+}
+void Union(int x,int y)
+{
+    x=Find(x),y=Find(y);
+    if(x!=y)
+    {
+        if(height[x]>height[y])father[y]=x;
+        else if(height[x]<height[y])father[x]=y;
+        else father[x]=y,height[y]++;
+    }
+}
+int main()
+{
+    road all_road[100000];
+    int concern[1000000];
+    int n,m,k;
+    scanf("%d%d%d",&n,&m,&k);
+    for(int i=0;i<m;i++)
+    {
+        scanf("%d%d",&all_road[i].x,&all_road[i].y);
+    }
+    for(int i=0;i<k;i++)
+    {
+        scanf("%d",&concern[i]);
+    }
+    //输入完毕
+    if(n==0||k==0)return 0;
+    for(int i=0;i<k;i++)
+    {
+        int enemy_no=concern[i];
+        init();
+        for(int i=0;i<m;i++)
+        {
+            if(all_road[i].x!=enemy_no&&all_road[i].y!=enemy_no)
+                Union(all_road[i].x,all_road[i].y);
+        }
+        int res=-1;
+        for(int i=1;i<=n;i++)
+            if(i!=enemy_no&&Find(i)==i)
+                res++;
+        printf("%d\n",res);
+    }
+}

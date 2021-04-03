@@ -1,0 +1,24 @@
+#include<string>
+#include<map>
+#include<iostream>
+using namespace std;
+map<string , int>m;
+int main()
+{
+    string s;
+    while(cin>>s)
+    {
+        for(int i=0;i<=s.size();i++)
+            for(int j=0;j<i;j++)
+            {
+                string key=s.substr(j,i-j);
+                m[key]++;
+            }
+        map<string ,int >::iterator it;
+        for(it=m.begin();it!=m.end();it++)
+        {
+            if(it->second>1)
+                cout<<it->first<<" "<<it->second<<endl;
+        }
+    }
+}

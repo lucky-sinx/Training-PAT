@@ -1,0 +1,27 @@
+#include<bits/stdc++.h>
+#define M 1000000007
+using namespace std;
+const int N=1e5+2;
+int preP[N],postT[N];
+int main()
+{
+    string s;cin>>s;
+    int n=s.size();
+    for(int i=0;i<n;i++)
+    {
+        if(i==0)preP[i]=0;
+        else preP[i]=preP[i-1];
+        if(s[i]=='P')preP[i]++;
+    }
+    for(int i=n-1;i>=0;i--)
+    {
+        if(i==n-1)postT[i]=0;
+        else postT[i]=postT[i+1];
+        if(s[i]=='T')postT[i]++;
+    }
+    int ans=0;
+    for(int i=1;i<n-1;i++)
+        if(s[i]=='A')
+        ans=(ans+preP[i]%M*postT[i]%M)%M;
+    cout<<ans;
+}

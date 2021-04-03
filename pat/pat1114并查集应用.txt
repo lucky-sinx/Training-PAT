@@ -1,0 +1,94 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=2e4+5;
+struct person
+{
+    int id,father,mother,k;
+    int children[6];
+    double estate,area;
+};
+struct family
+{
+    int id,people=0;
+    double estate,area;
+    double ave_est,ave_area;
+};
+bool cmp(family x,family y)
+{
+    if(x.ave_area!=y.ave_area)return x.ave_area>y.ave_area;
+    else return x.id<y.id;
+}
+person data[N];
+family ans[N];
+int n;
+bool vis[N]={0};
+int father[N];
+void init()
+{
+    for(int i=0;i<N;i++)
+    {
+        father[i]=i;
+    }
+}
+int Find(int x)
+{
+    return father[x]==x?x:Find(father[x]);
+}
+void Union(int x,int y)
+{
+    x=Find(x),y=Find(y);
+    if(x!=y)
+    {
+        if(x<y)father[y]=x;
+        else father[x]=y;
+    }
+}
+int main()
+{
+    cin>>n;
+    init();
+    //输入并构建集合
+    for(int i=0;i<n;i++)
+    {
+        int id;cin>>id;
+        data[id].id=id;
+        cin>> data[id].father>>data[id].mother>>data[id].k;
+        vis[id]=true;
+        if(data[id].father!=-1){
+            vis[data[id].father]=true;
+            Union(id,data[id].father);
+        }
+        if(data[id].mother!=-1){
+            vis[data[id].mother]=true;
+            Union(id,data[id].mother);
+        }
+        for(int j=0;j<data[id].k;j++)
+        {
+            cin>>data[id].children[j];
+            vis[data[id].children[j]]=true;
+            Union(id,data[id].children[j]);
+        }
+        cin>>data[id].estate>>data[id].area;
+    }
+    for(int i=0;i<N;i++)
+        if(vis[i]){
+            int type=Find(i);
+            ans[type].id=type;
+            ans[type].people++;
+            ans[type].estate+=data[i].estate;
+            ans[type].area+=data[i].area;
+        }
+    int cnt=0;
+    for(int i=0;i<N;i++)
+        if(ans[i].people>0){
+            cnt++;
+            ans[i].ave_area=ans[i].area/ans[i].people;
+            ans[i].ave_est=ans[i].estate/ans[i].people;
+        }
+    sort(ans,ans+N,cmp);
+    cout<<cnt<<endl;
+    for(int i=0;i<cnt;i++)
+    {
+        printf("%04d %d %.3lf %.3lf\n",ans[i].id,ans[i].people,ans[i].ave_est,ans[i].ave_area);
+    }
+}

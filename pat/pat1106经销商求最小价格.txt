@@ -1,0 +1,50 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=1e5+5;
+vector<int> t[N];
+int n;
+bool isretail[N];
+double p,r;
+struct node
+{
+    int no;
+    int depth;
+    node(int n,int d):no(n),depth(d){}
+};
+int main()
+{
+    cin>>n>>p>>r;
+    for(int i=0;i<n;i++)
+    {
+        int k;
+        cin>>k;
+        if(k)isretail[i]=false;
+        else isretail[i]=true;
+        while(k--)
+        {
+            int x;cin>>x;
+            t[i].push_back(x);
+        }
+    }
+    queue<node> q;
+    q.push(node(0,0));
+    double minprice=9999999;
+    int times=0;
+    while(!q.empty())
+    {
+        node now=q.front();
+        q.pop();
+        if(isretail[now.no])
+        {
+            int depth=now.depth;
+            double price=p*pow(1+r/100,depth);
+            if(price<minprice){minprice=price,times=1;}
+            else if(price==minprice)times++;
+        }
+        for(int i=0;i<t[now.no].size();i++)
+            q.push(node(t[now.no][i],now.depth+1));
+    }
+//    cout<<minprice<<' '<<times<<endl;
+    printf("%.4f %d",minprice,times);
+}
+

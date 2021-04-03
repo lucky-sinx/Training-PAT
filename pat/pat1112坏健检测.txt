@@ -1,0 +1,34 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    string s;
+    int k;
+    cin>>k>>s;
+    int hash_[128]={0};
+    for(int i=0;i<s.size();)
+    {
+        int j=i+1;
+        while(j<s.size()&&s[j]==s[i])j++;
+        if(hash_[s[i]]>=0)
+            hash_[s[i]]=(j-i)%k==0?1:-1;
+        i=j;
+    }
+    string ans;
+    bool output[128]={false};
+    for(int i=0;i<s.size();)
+    {
+        ans+=s[i];
+        if(hash_[s[i]]>0)
+        {
+            if(!output[s[i]]){
+                cout<<s[i];
+                output[s[i]]=1;
+            }
+            i+=k;
+        }
+        else if(hash_[s[i]]==-1)
+            i++;
+    }
+    cout<<endl<<ans<<endl;
+}

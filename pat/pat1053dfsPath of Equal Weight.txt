@@ -1,0 +1,55 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+struct node
+{
+    int id;
+    int weight;
+    node(int i,int w):id(i),weight(w){}
+};
+bool cmp(node x,node y){return x.weight>y.weight;}
+const int N=101;
+int allnode[N];
+vector<node> tree[N];
+void dfs(int x,vector<int> path)
+{
+//    cout<<x<<endl;
+    if(x<0)return;
+    int now=path[path.size()-1];
+    if(x==0)
+    {
+        if(tree[now].size()!=0)return;
+        for(int i=0;i<path.size();i++)
+        {
+            if(i!=0)cout<<' ';
+            cout<<allnode[path[i]];
+        }
+        cout<<endl;
+        return;
+    }
+    for(int i=0;i<tree[now].size();i++)
+    {
+        path.push_back(tree[now][i].id);
+        dfs(x-allnode[tree[now][i].id],path);
+        path.pop_back();
+    }
+}
+int main()
+{
+    int n,m,s;cin>>n>>m>>s;
+    for(int i=0;i<n;i++)cin>>allnode[i];
+    for(int i=0;i<m;i++)
+    {
+        int id;cin>>id;
+        int a;cin>>a;
+        while(a--)
+        {
+            int i;cin>>i;
+            tree[id].push_back(node(i,allnode[i]));
+        }
+    }
+    for(int i=0;i<n;i++)sort(tree[i].begin(),tree[i].begin()+tree[i].size(),cmp);
+    vector<int>path;path.push_back(0);
+    dfs(s-allnode[0],path);
+}

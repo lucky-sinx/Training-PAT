@@ -1,0 +1,25 @@
+#include<cstdio>
+#include<iostream>
+#include<string>
+using namespace std;
+int data[2][13]={
+    {0,31,28,31,30,31,30,31,31,30,31,30,31},
+    {0,31,29,31,30,31,30,31,31,30,31,30,31}
+};
+bool isleapyear(int year)
+{
+    return (year%4==0&&year%100!=0)||year%400==0;
+}
+int main()
+{
+    int y,m,d;
+    while(scanf("%d%d%d",&y,&m,&d)!=EOF)
+    {
+        int num=0;
+        int res=isleapyear(y);
+        for(int i=0;i<m;i++)
+            num+=data[res][i];
+        num+=d;
+        cout<<num<<endl;
+    }
+}

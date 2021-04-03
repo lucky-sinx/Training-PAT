@@ -1,0 +1,70 @@
+#include<string>
+#include<cstdio>
+#include<iostream>
+#include<queue>
+#include<vector>
+#include<stack>
+#include<cmath>
+using namespace std;
+typedef long long ll;
+
+struct Matrix{
+    int matrix[10][10];
+    int row;
+    int col;
+    Matrix(int r,int c):row(r),col(c){}
+};
+Matrix Multiply(Matrix x,Matrix y)
+{
+    Matrix res(x.row,y.col);
+    for(int i=0;i<x.row;i++)
+        for(int j=0;j<y.col;j++){
+            res.matrix[i][j]=0;
+            for(int k=0;k<y.col;k++)
+                res.matrix[i][j]+=x.matrix[i][k]*y.matrix[k][j];
+        }
+    return res;
+}
+void PrintMatrix(Matrix m)
+{
+    for(int i=0;i<m.row;i++)
+    {
+        for(int j=0;j<m.col;j++)
+        {
+            cout<<m.matrix[i][j]<<' ';
+        }
+        cout<<endl;
+    }
+}
+Matrix FastMatrixExp(Matrix x,int k)
+{
+    Matrix res(x.row,x.col);
+    for(int i=0;i<res.row;i++)
+        for(int j=0;j<res.col;j++)
+            if(i==j)
+                res.matrix[i][j]=1;
+            else
+                res.matrix[i][j]=0;
+    while(k!=0)
+    {
+        if(k%2!=0)
+        {
+            res=Multiply(res,x);
+        }
+        k/=2;
+        x=Multiply(x,x);
+    }
+    return res;
+}
+int main()
+{
+    int n,k;
+    while(cin>>n>>k){
+        Matrix res(n,n);
+        for(int i=0;i<n;i++)
+            for(int j=0;j<n;j++)
+                cin>>res.matrix[i][j];
+        Matrix answer=FastMatrixExp(res,k);
+        PrintMatrix(answer);
+    }
+}

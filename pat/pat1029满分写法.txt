@@ -1,0 +1,36 @@
+#include<iostream>
+#include<climits>
+using namespace std;
+const int MAXN=200005;
+int n,m;
+int a[MAXN];
+int main()
+{
+    int m,n;cin>>n;
+    for(int i=1;i<=n;i++)scanf("%d", &a[i]);
+    a[n+1]=INT_MAX;
+    int t;
+    cin>>m;
+    int mid=(m+n+1)/2;
+    int cnt=0;
+    int i=1;
+    for(int j=0;j<m;j++)
+    {
+        scanf("%d", &t);
+        while(t>a[i])
+        {
+            cnt++;
+            if(cnt==mid)cout<<a[i];
+            i++;
+        }
+        cnt++;
+        if(cnt==mid)cout<<t;
+    }
+    while(i<n)
+    {
+        cnt++;
+        if(cnt==mid)cout<<a[i];
+        i++;
+    }
+}
+

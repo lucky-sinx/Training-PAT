@@ -1,0 +1,28 @@
+#include<bits/stdc++.h>
+using namespace std;
+map<int,bool> hash_;
+int main()
+{
+    int m,n;cin>>m>>n;
+    vector<int> vec;
+    for(int i=0;i<n;i++){int x;cin>>x;vec.push_back(x);hash_[x]=true;}
+    while(m--)
+    {
+        int u,v,ans;
+        cin>>u>>v;
+        for(int i=0;i<n;i++)
+        {
+            ans=vec[i];
+            if((ans<=u&&ans>=v)||(ans<=v&&ans>=u))
+                break;
+        }
+        if(hash_[u]==0&&hash_[v]==0)
+            printf("ERROR: %d and %d are not found.\n", u, v);
+        else if(hash_[u]==false||hash_[v]==false)
+            printf("ERROR: %d is not found.\n", hash_[u] == false ? u : v);
+        else if(ans==u||ans==v)
+            printf("%d is an ancestor of %d.\n", ans, ans == u ? v : u);
+        else
+            printf("LCA of %d and %d is %d.\n", u, v, ans);
+    }
+}

@@ -1,0 +1,106 @@
+#include<bits/stdc++.h>
+#define NULL 0
+using namespace std;
+int n;
+struct node
+{
+    int data;
+    int no;
+    node *l,*r;
+    node(int d,int n):data(d),no(n),l(NULL),r(NULL){}
+};
+int height(node *t)
+{
+    if(!t)return 0;
+    else return max(height(t->l),height(t->r))+1;
+}
+int getbalance(node *t)
+{
+    if(!t)return 0;
+    return height(t->l)-height(t->r);
+}
+void R(node *&t)
+{
+    node *temp=t->l;
+    t->l=temp->r;
+    temp->r=t;
+    t=temp;
+}
+void L(node *&t)
+{
+    node *temp=t->r;
+    t->r=temp->l;
+    temp->l=t;
+    t=temp;
+}
+void Insert(node *&t,int x,int no)
+{
+    if(!t){t=new node(x,no);return;}
+    if(x<t->data)
+    {
+        Insert(t->l,x,2*no+1);
+        if(getbalance(t)==2)
+        {
+            int type=getbalance(t->l);
+            if(type==1)R(t);
+            else if(type==-1)
+            {
+                L(t->l);
+                R(t);
+            }
+        }
+    }
+    else if(x>t->data)
+    {
+        Insert(t->r,x,2*no+2);
+        if(getbalance(t)==-2)
+        {
+            int type=getbalance(t->r);
+            if(type==-1)L(t);
+            else if(type==1)
+            {
+                R(t->r);
+                L(t);
+            }
+        }
+    }
+}
+int max_no=-1;
+void dfs_no(node *&t,int no)
+{
+    if(!t)return;
+    t->no=no;
+    max_no=max(max_no,no);
+    dfs_no(t->l,2*no+1);
+    dfs_no(t->r,2*no+2);
+}
+int main()
+{
+    cin>>n;
+    node *t=NULL;
+    for(int i=0;i<n;i++)
+    {
+        int x;cin>>x;
+        Insert(t,x,0);
+    }
+    dfs_no(t,0);
+    queue<node *>q;
+    q.push(t);
+    int cnt=0;
+    while(!q.empty())
+    {
+        node *temp=q.front();
+        if(cnt)cout<<' ';
+        cnt++;
+        cout<<temp->data;
+        q.pop();
+        if(temp->l)
+            q.push(temp->l);
+        if(temp->r)
+            q.push(temp->r);
+    }
+    cout<<endl;
+//    cout<<endl<<n-1<<' '<<max_no<<endl;
+    if(max_no!=n-1)cout<<"NO"<<endl;
+    else cout<<"YES"<<endl;
+}

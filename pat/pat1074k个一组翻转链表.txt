@@ -1,0 +1,38 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=1e5+5;
+struct node
+{
+    int data;
+    int now;
+    int next;
+};
+node linklist[N];
+int main()
+{
+    int start,n,k;cin>>start>>n>>k;
+    for(int i=0;i<n;i++)
+    {
+        int address;
+        scanf("%d", &address);
+		scanf("%d%d", &linklist[address].data, &linklist[address].next);
+//        cin>>address;
+//        cin>>linklist[address].data>>linklist[address].next;
+        linklist[address].now=address;
+    }
+    vector<node> List;
+    while(start!=-1)
+    {
+        List.push_back(linklist[start]);
+        start=linklist[start].next;
+    }
+    int g=List.size()/k;
+    for(int i=0;i<g;i++)reverse(List.begin()+i*k,List.begin()+i*k+k);
+    for(int i=0;i<List.size();i++)
+    {
+        printf("%05d %d ",List[i].now,List[i].data);
+        if(i!=List.size()-1)printf("%05d",List[i+1].now);
+        else cout<<-1;
+        cout<<endl;
+    }
+}

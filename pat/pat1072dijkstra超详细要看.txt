@@ -1,0 +1,86 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int inf=99999999;
+const int N=1050;
+int n,m,k,ds,station;
+int graph[1050][1050],dis[1050];
+bool vis[1050];
+int s2i(string s)
+{
+    int ans=0;
+    for(int i=0;i<s.size();i++)
+        ans=ans*10+s[i]-'0';
+    return ans;
+}
+int main()
+{
+    //初始化距离图矩阵
+    fill(graph[0],graph[0]+1050*1050,inf);
+    for(int i=0;i<N;i++)graph[i][i]=0;//自己到自己为0
+    fill(dis,dis+N,inf);
+    //读入数据
+    cin>>n>>m>>k>>ds;
+    string s,t;
+    for(int i=0;i<k;i++)
+    {
+        int x,y,d;
+        cin>>s>>t>>d;
+        if(s[0]=='G')x=s2i(s.substr(1))+n;
+        else x=s2i(s);
+        if(t[0]=='G')y=s2i(t.substr(1))+n;
+        else y=s2i(t);
+        graph[x][y]=graph[y][x]=d;//注意对称
+//        cout<<x<<y<<endl;
+    }
+    //开始最短路径算法
+    int id=-1;
+    double ansdis=-1,ansave=inf;
+    for(int index=n+1;index<=n+m;index++)//对每个站dijkstra
+    {
+        double mindis=inf,ave=0;
+        //初始化dijkstra参数
+        fill(dis,dis+N,inf);
+        fill(vis,vis+N,0);
+        dis[index]=0;
+        //start
+        for(int i=0;i<n+m;i++)//控制次数的,n+m次
+        {
+            int u=-1,minn=inf;
+            for(int j=1;j<=n+m;j++)
+            {
+                if(vis[j]==false&&dis[j]<minn)//找到dis最小的未访问的点，第一次是index
+                    {u=j;minn=dis[j];}
+            }
+            if(u==-1)break;//全部vis过了break
+            vis[u]=true;
+//            cout<<vis[u];for(int i=1;i<=n+m;i++)cout<<vis[i]<<' ';cout<<endl;
+            for(int j=1;j<=n+m;j++)//松弛操作
+            {
+                if(vis[j]==false&&dis[j]>dis[u]+graph[u][j])
+                    dis[j]=dis[u]+graph[u][j];
+            }
+        }
+        //根据dis计算评价参数mindis,ave
+        for(int i=1;i<=n;i++)
+        {
+            if(dis[i]>ds){mindis=-1;break;}
+            if(dis[i]<mindis){mindis=dis[i];}
+            ave+=1.0*dis[i];
+        }
+        if(mindis==-1)continue;//无法服务所有
+        ave/=n;
+        if(mindis>ansdis)//选取mindis最大的
+        {
+            ansdis=mindis;
+            id=index;
+            ansave=ave;
+        }
+        else if(mindis==ansdis&&ave<ansave)//mindis一样取ave最小的
+        {
+            id=index;
+            ansave=ave;
+        }
+    }
+    if(id==-1)cout<<"No Solution";
+    else printf("G%d\n%.1f %.1f",id-n,ansdis,ansave);
+}

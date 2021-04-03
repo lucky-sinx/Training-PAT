@@ -1,0 +1,52 @@
+#include<iostream>
+#include<string>
+#include<vector>
+#include<cstdio>
+using namespace std;
+const int N=1001;
+struct node
+{
+    string account;
+    string password;
+    bool flag;
+    node(string c,string p):account(c),password(p),flag(false){}
+};
+vector<node> data;
+int main()
+{
+    int n;
+    cin>>n;
+    for(int i=0;i<n;i++)
+    {
+        string c,p;
+        cin>>c>>p;
+        data.push_back(node(c,p));
+//        cout<<data[data.size()-1].account<<data[data.size()-1].password<<endl;
+    }
+    int res=0;
+    for(int i=0;i<data.size();i++)
+    {
+//        cout<<data[i].password<<endl;
+        for(int j=0;j<data[i].password.size();j++)
+        {
+            if(data[i].password[j]=='1')data[i].password[j]='@',data[i].flag=true;
+            if(data[i].password[j]=='0')data[i].password[j]='%',data[i].flag=true;
+            if(data[i].password[j]=='l')data[i].password[j]='L',data[i].flag=true;
+            if(data[i].password[j]=='O')data[i].password[j]='o',data[i].flag=true;
+        }
+    }
+    for(int i=0;i<data.size();i++)if(data[i].flag)res++;
+    if(n==1)
+        printf("%d\nThere is %d account and no account is modified\n",1,1);
+    else if(res==0)
+        printf("%d\nThere are %d accounts and no account is modified\n",data.size(),data.size());
+    else
+    {
+        cout<<res<<endl;
+        for(int i=0;i<data.size();i++)
+        {
+            if(data[i].flag)
+                cout<<data[i].account<<' '<<data[i].password<<endl;
+        }
+    }
+}

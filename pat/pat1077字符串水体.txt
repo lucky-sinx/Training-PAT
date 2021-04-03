@@ -1,0 +1,40 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=105;
+int n,minsize=300,minindex;
+int Size[N];
+string alls[N];
+int main()
+{
+    int n;cin>>n;getchar();
+    for(int i=0;i<n;i++)
+    {
+        string a;
+        getline(cin,a);
+        Size[i]=a.size();
+        if(Size[i]<minsize){minsize=a.size();minindex=i;}
+//        cout<<a.size()<<endl;
+        alls[i]=a;
+    }
+//    for(int i=0;i<n;i++)cout<<alls[i]<<endl;
+    int maxlen=0;
+    for(int i=0;i<minsize;i++)
+    {
+        bool flag=true;
+        char c=alls[minindex][Size[minindex]-1-i];
+        for(int j=0;j<n;j++)
+            if(alls[j][Size[j]-1-i]!=c)
+            {
+                flag=false;
+                break;
+            }
+        if(flag)maxlen++;
+        else break;
+    }
+//    cout<<maxlen<<endl;
+    if(maxlen==0){cout<<"nai";return 0;}
+    string ans="";
+    for(int i=0;i<maxlen;i++)
+        ans=alls[minindex][minsize-1-i]+ans;
+    cout<<ans;
+}

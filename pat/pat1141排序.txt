@@ -1,0 +1,59 @@
+#include<bits/stdc++.h>
+using namespace std;
+int cnt=0;
+const int N=2e5;
+int n;
+struct school
+{
+    string name;
+    int scoreB,scoreA,scoreT;
+    int tws;
+    int cnt;
+    int ranking;
+    school():scoreA(0),scoreB(0),scoreT(0),cnt(0){}
+};
+school scl[N];
+bool cmp(school x,school y)
+{
+    if(x.tws!=y.tws)return x.tws>y.tws;
+    if(x.cnt!=y.cnt)return x.cnt<y.cnt;
+    return x.name<y.name;
+}
+string low(string s)
+{
+    for(int i=0;i<n;i++)
+        if(isupper(s[i]))s[i]=s[i]-'A'+'a';
+    return s;
+}
+int main()
+{
+    cin>>n;
+    string id,name;int score;
+    
+    unordered_map<string,int> hash_;
+    while(n--)
+    {
+        cin>>id>>score>>name;
+        for(int i=0;i<name.size();i++)
+            if(isupper(name[i]))name[i]=name[i]-'A'+'a';
+        if(hash_.find(name)==hash_.end())hash_[name]=cnt++;
+        int no=hash_[name];
+        scl[no].cnt++;
+        scl[no].name=name;
+        if(id[0]=='A')scl[no].scoreA+=score;
+        else if(id[0]=='B')scl[no].scoreB+=score;
+        else if(id[0]=='T')scl[no].scoreT+=score;
+    }
+    for(int i=0;i<cnt;i++)
+        scl[i].tws=(int)(scl[i].scoreB/1.5+scl[i].scoreA*1.0+scl[i].scoreT*1.5);
+    sort(scl,scl+cnt,cmp);
+    scl[0].ranking=1;
+    for(int i=1;i<cnt;i++)
+    {
+        if(scl[i].tws==scl[i-1].tws)scl[i].ranking=scl[i-1].ranking;
+        else scl[i].ranking=i+1;
+    }
+    cout<<cnt<<endl;
+    for(int i=0;i<cnt;i++)
+        cout<<scl[i].ranking<<' '<<scl[i].name<<' '<<scl[i].tws<<' '<<scl[i].cnt<<endl;
+}

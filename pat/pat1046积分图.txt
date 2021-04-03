@@ -1,0 +1,26 @@
+#include<iostream>
+using namespace std;
+const int N=1e5+5;
+int a[N];
+int sum[N];
+int main()
+{
+    int n;
+    cin>>n;
+    sum[0]=0;
+    for(int i=1;i<=n;i++)
+    {
+        int x;cin>>x;
+        a[i]=x;
+        sum[i]=sum[i-1]+x;
+    }
+    int x,y,k,ans;
+    cin>>k;
+    while(k--)
+    {
+        cin>>x>>y;
+        int b1=min(x,y),b2=max(x,y);
+        ans=min(sum[b2-1]-sum[b1-1],sum[n]+sum[b1-1]-sum[b2-1]);
+        cout<<ans<<endl;
+    }
+}

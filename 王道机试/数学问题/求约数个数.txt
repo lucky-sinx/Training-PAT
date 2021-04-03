@@ -1,0 +1,26 @@
+#include<iostream>
+#include<vector>
+#include<cmath>
+using namespace std;
+int yueshu(int x)//求约数的方法
+{
+    int res=0;
+    int i;
+    for(int i=1;i*i<x;i++)
+        if(x%i==0)res+=2;
+    if(i*i==x)res++;
+    return res;
+}
+int main()
+{
+    int n;
+    while(cin>>n)
+    {
+        while(n--)
+        {
+            int x,num=0;
+            cin>>x;
+            cout<<yueshu(x)<<endl;
+        }
+    }
+}

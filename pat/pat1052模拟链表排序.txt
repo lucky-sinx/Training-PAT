@@ -1,0 +1,42 @@
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+using namespace std;
+const int N=1e5+1;
+struct linknode
+{
+    int addnow;
+    int val;
+    int addnext;
+};
+bool cmp(linknode x,linknode y){return x.val<y.val;}
+linknode f[N];
+linknode linklist[N];
+int main()
+{
+    int n,start,cnt=0;
+    cin>>n>>start;
+    for(int i=0;i<n;i++)
+    {
+        int now,v,next;cin>>now>>v>>next;
+        f[now].addnow=now;
+        f[now].val=v;
+        f[now].addnext=next;
+    }
+    while(start!=-1)
+    {
+        linklist[cnt].addnow=f[start].addnow;
+        linklist[cnt].val=f[start].val;
+        linklist[cnt].addnext=f[start].addnext;
+        start=f[start].addnext;
+        cnt++;
+    }
+    sort(linklist,linklist+cnt,cmp);
+    if(cnt==0){cout<<"0 -1";return 0;}
+    printf("%d %05d\n",cnt,linklist[0].addnow);
+    for(int i=0;i<cnt-1;i++)
+        linklist[i].addnext=linklist[i+1].addnow;
+    for(int i=0;i<cnt-1;i++)
+        printf("%05d %d %05d\n",linklist[i].addnow,linklist[i].val,linklist[i].addnext);
+    printf("%05d %d %d",linklist[cnt-1].addnow,linklist[cnt-1].val,-1);
+}

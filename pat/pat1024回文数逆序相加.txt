@@ -1,0 +1,50 @@
+#include<iostream>
+#include<string>
+using namespace std;
+string add(string s1,string s2)
+{
+    string res="";
+    int carry=0;
+    for(int i=s1.size()-1;i>=0;i--)
+    {
+        int t=s1[i]-'0'+s2[i]-'0'+carry;
+        carry=t/10;
+        t%=10;t+='0';
+        res=(char)t+res;
+    }
+    if(carry!=0)res='1'+res;
+    return res;
+}
+bool isPalin(string s)
+{
+    int l=0,r=s.size()-1;
+    while(l<=r)
+    {
+        if(s[l]!=s[r])return false;
+        l++;r--;
+    }
+    return true;
+}
+int main()
+{
+    string s,rs;
+    int maxk;
+    cin>>s>>maxk;
+    if(isPalin(s))
+    {
+        cout<<s<<endl<<0;
+        return 0;
+    }
+    rs=string(s.rbegin(),s.rend());
+//    cout<<s<<endl<<rs<<endl;
+    int k=1;
+    string res=add(s,rs);
+    while(!isPalin(res)&&k<maxk)
+    {
+        s=res;
+        rs=string(s.rbegin(),s.rend());
+        res=add(s,rs);
+        k++;
+    }
+    cout<<res<<endl<<k;
+}

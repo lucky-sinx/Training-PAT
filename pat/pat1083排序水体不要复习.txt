@@ -1,0 +1,33 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct stu
+{
+    string name;
+    string id;
+    int point;
+};
+bool cmp(stu x,stu y)
+{
+    return x.point>y.point;
+}
+const int N=200;
+stu student[N];
+int main()
+{
+    int n;cin>>n;
+    for(int i=0;i<n;i++)
+        cin>> student[i].name>> student[i].id>> student[i].point;
+    int minp,maxp;
+    cin>>minp>>maxp;
+    sort(student,student+n,cmp);
+    bool flag=true;
+    for(int i=0;i<n;i++)
+    {
+        if(student[i].point>=minp&&student[i].point<=maxp)
+        {
+            cout<<student[i].name<<' '<<student[i].id<<endl;
+            flag=false;
+        }
+    }
+    if(flag)cout<<"NONE";
+}

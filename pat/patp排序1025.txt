@@ -1,0 +1,57 @@
+#include<iostream>
+#include<vector>
+#include<map>
+#include<cstdio>
+#include<string>
+#include<algorithm>
+using namespace std;
+const int MAXN=30010;
+struct student
+{
+    string no;
+    int score;
+    int lo_no;
+    int lo_rank;
+};
+bool cmp(student x,student y)
+{
+    if(x.score!=y.score)return x.score>y.score;
+    else return x.no<y.no;
+}
+student stu[MAXN];
+int main()
+{
+    int n;
+    cin>>n;
+    int sum=0;
+    for(int i=0;i<n;i++)
+    {
+        int k;
+        cin>>k;
+        for(int j=0;j<k;j++)
+        {
+            string s;
+            int score;
+            //cin>>s>>score;
+            cin>>stu[sum].no>>stu[sum].score;
+            stu[sum].lo_no=i+1;
+            sum++;
+        }
+        sort(stu+sum-k,stu+sum,cmp);
+        stu[sum-k].lo_rank=1;
+        for(int j=sum-k+1;j<sum;j++)
+        {
+            if(stu[j].score==stu[j-1].score)stu[j].lo_rank=stu[j-1].lo_rank;
+            else stu[j].lo_rank=j-(sum-k)+1;
+        }
+    }
+    cout<<sum<<endl;
+    sort(stu,stu+sum,cmp);
+    int r=1;
+    for(int i=0;i<sum;i++)
+    {
+        if(i!=0&&stu[i].score!=stu[i-1].score)
+            r=i+1;
+        cout<<stu[i].no<<" "<<r<<" "<<stu[i].lo_no<<' '<<stu[i].lo_rank<<endl;
+    }
+}
